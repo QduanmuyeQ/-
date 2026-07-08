@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>游戏分享</title>
+    <link rel="stylesheet" type="text/css" href="../../css/bingguo.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        .game-page {
+            padding: 20px;
+            color: white;
+        }
+        .game-page h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #CC4488;
+        }
+        .game-intro {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        .game-intro h2 {
+            color: #FFA500;
+            margin-bottom: 15px;
+        }
+        .game-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .game-card {
+            position: relative;
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+            aspect-ratio: 4/3;
+            will-change: transform;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.12);
+        }
+        .game-card.video-mode {
+            grid-column: span 2;
+            aspect-ratio: 16/9;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            z-index: 10;
+            animation: cardExpand 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes cardExpand {
+            0% {
+                transform: scale(0.95);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .game-card .card-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .game-card.video-mode .card-content {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+        .game-card .game-icon {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            object-fit: cover;
+            border: 3px solid rgba(136, 220, 220, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-card:hover .game-icon {
+            transform: scale(1.1);
+            border-color: #88DCDC;
+        }
+        .game-card h3 {
+            color: #FFD700;
+            font-size: 20px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .game-card p {
+            font-size: 14px;
+            color: #ccc;
+            text-align: center;
+            line-height: 1.5;
+        }
+        .game-card .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .game-card.video-mode .video-container {
+            opacity: 1;
+            visibility: visible;
+        }
+        .game-card .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            border: none;
+        }
+        .game-card .video-container .placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 2px dashed rgba(136, 220, 220, 0.5);
+        }
+        .game-card .video-container .placeholder-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+        .game-card .video-container .placeholder-text {
+            font-size: 16px;
+            color: #88DCDC;
+        }
+        .game-card .video-container .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-card .video-container .close-btn:hover {
+            background: rgba(255,0,0,0.6);
+        }
+        .game-card .hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+        }
+        .game-page h1 {
+            overflow: hidden;
+            display: inline-block;
+        }
+        .game-page h1 .title-inner {
+            display: inline-block;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .game-intro {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .game-card {
+            opacity: 0;
+            transform: translateY(60px);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-page">
+        <div class="page-header">
+            <h1 class="page-title"><span class="title-inner">🎮 游戏分享</span></h1>
+        </div>
+        
+        <div class="game-intro intro-section">
+            <h2>关于游戏</h2>
+            <p>我玩的游戏都比较杂，这些分享的游戏都是我直播留档或自行录制的视频，都上传到了B站。</p>
+            <p><strong>长按游戏卡片</strong>即可观看对应的视频！</p>
+        </div>
+        
+        <div class="game-list">
+            <div class="game-card" data-video-url="https://www.bilibili.com/video/BV1atYgzSEPW?spm_id_from=333.788.videopod.episodes&vd_source=cc5a318c0576a4fe5651e2b9c886727b&p=3">
+                <div class="card-content">
+                    <img src="img/szg.jpg" class="game-icon">
+                    <h3>空洞骑士：丝之歌</h3>
+                    <p>备受期待的续作，在全新的地下王国中探索冒险</p>
+                </div>
+                <div class="video-container">
+                    <button class="close-btn">×</button>
+                    <div class="placeholder">
+                        <div class="placeholder-icon">🎬</div>
+                        <div class="placeholder-text">B站视频播放区</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 8px;">请在 data-video-url 属性中填入B站视频链接</div>
+                    </div>
+                </div>
+                <div class="hint">长按播放</div>
+            </div>
+            
+            <div class="game-card" data-video-url="https://www.bilibili.com/video/BV1k1QzB1Esr?spm_id_from=333.788.videopod.episodes&vd_source=cc5a318c0576a4fe5651e2b9c886727b&p=157">
+                <div class="card-content">
+                    <img src="img/apex.jpg" class="game-icon">
+                    <h3>Apex英雄</h3>
+                    <p>快节奏的大逃杀游戏，独特的传奇角色技能</p>
+                </div>
+                <div class="video-container">
+                    <button class="close-btn">×</button>
+                    <div class="placeholder">
+                        <div class="placeholder-icon">🎬</div>
+                        <div class="placeholder-text">B站视频播放区</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 8px;">请在 data-video-url 属性中填入B站视频链接</div>
+                    </div>
+                </div>
+                <div class="hint">长按播放</div>
+            </div>
+            
+            <div class="game-card" data-video-url="https://www.bilibili.com/video/BV1x4bCzREuj/?spm_id_from=333.1387.homepage.video_card.click&vd_source=cc5a318c0576a4fe5651e2b9c886727b">
+                <div class="card-content">
+                    <img src="img/wdsj.jpg" class="game-icon">
+                    <h3>我的世界</h3>
+                    <p>无限创造的沙盒游戏，建造属于你的世界</p>
+                </div>
+                <div class="video-container">
+                    <button class="close-btn">×</button>
+                    <div class="placeholder">
+                        <div class="placeholder-icon">🎬</div>
+                        <div class="placeholder-text">B站视频播放区</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 8px;">请在 data-video-url 属性中填入B站视频链接</div>
+                    </div>
+                </div>
+                <div class="hint">长按播放</div>
+            </div>
+            
+            <div class="game-card" data-video-url="https://www.bilibili.com/video/BV1kj32z7EYo/?spm_id_from=333.1387.homepage.video_card.click&vd_source=2f4dcb39c6e726c3f6f62ce64a35384b">
+                <div class="card-content">
+                    <img src="img/osu.png" class="game-icon">
+                    <h3>osu!</h3>
+                    <p>热门音乐节奏游戏，考验你的反应与技巧</p>
+                </div>
+                <div class="video-container">
+                    <button class="close-btn">×</button>
+                    <div class="placeholder">
+                        <div class="placeholder-icon">🎬</div>
+                        <div class="placeholder-text">B站视频播放区</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 8px;">请在 data-video-url 属性中填入B站视频链接</div>
+                    </div>
+                </div>
+                <div class="hint">长按播放</div>
+            </div>
+            
+            <div class="game-card" data-video-url="https://www.bilibili.com/video/BV145R5YwEr5/?spm_id_from=333.1387.homepage.video_card.click">
+                <div class="card-content">
+                    <div class="game-icon" style="font-size: 80px;">🎂</div>
+                    <h3>生日视频</h3>
+                    <p>记录美好瞬间，感谢大家的祝福</p>
+                </div>
+                <div class="video-container">
+                    <button class="close-btn">×</button>
+                    <div class="placeholder">
+                        <div class="placeholder-icon">🎬</div>
+                        <div class="placeholder-text">B站视频播放区</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 8px;">请在 data-video-url 属性中填入B站视频链接</div>
+                    </div>
+                </div>
+                <div class="hint">长按播放</div>
+            </div>
+            
+            <div class="game-card" data-video-url="https://www.bilibili.com/video/BV1TsuYzmERw/?spm_id_from=333.1387.homepage.video_card.click">
+                <div class="card-content">
+                    <img src="img/vkg.png" class="game-icon">
+                    <h3>EWC世界冠军</h3>
+                    <p>荣耀时刻，VKG夺冠精彩瞬间</p>
+                </div>
+                <div class="video-container">
+                    <button class="close-btn">×</button>
+                    <div class="placeholder">
+                        <div class="placeholder-icon">🎬</div>
+                        <div class="placeholder-text">B站视频播放区</div>
+                        <div style="font-size: 12px; color: #666; margin-top: 8px;">请在 data-video-url 属性中填入B站视频链接</div>
+                    </div>
+                </div>
+                <div class="hint">长按播放</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var longPressTimer;
+        var isVideoMode = false;
+        
+        document.querySelectorAll('.game-card').forEach(function(card) {
+            card.addEventListener('mousedown', function(e) {
+                if (isVideoMode && !card.classList.contains('video-mode')) {
+                    longPressTimer = setTimeout(function() {
+                        switchVideoMode(card);
+                    }, 500);
+                } else if (!isVideoMode) {
+                    longPressTimer = setTimeout(function() {
+                        enterVideoMode(card);
+                    }, 500);
+                }
+            });
+            
+
+            
+            card.addEventListener('touchstart', function(e) {
+                if (isVideoMode && !card.classList.contains('video-mode')) {
+                    longPressTimer = setTimeout(function() {
+                        switchVideoMode(card);
+                    }, 500);
+                } else if (!isVideoMode) {
+                    longPressTimer = setTimeout(function() {
+                        enterVideoMode(card);
+                    }, 500);
+                }
+            });
+            
+            card.addEventListener('touchend', function() {
+                clearTimeout(longPressTimer);
+            });
+            
+            card.querySelector('.close-btn').addEventListener('click', function(e) {
+                e.stopPropagation();
+                exitVideoMode();
+            });
+        });
+        
+        document.querySelector('.game-list').addEventListener('click', function(e) {
+            if (isVideoMode && e.target.classList.contains('game-list')) {
+                exitVideoMode();
+            }
+        });
+        
+        function enterVideoMode(card) {
+            isVideoMode = true;
+            card.classList.add('video-mode');
+            
+            var videoUrl = card.getAttribute('data-video-url');
+            var videoContainer = card.querySelector('.video-container');
+            
+            if (videoUrl && videoUrl.trim()) {
+                var iframe = document.createElement('iframe');
+                iframe.src = convertToBilibiliEmbed(videoUrl);
+                iframe.width = '100%';
+                iframe.height = '100%';
+                iframe.frameborder = '0';
+                iframe.allowfullscreen = true;
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                
+                var placeholder = videoContainer.querySelector('.placeholder');
+                if (placeholder) {
+                    placeholder.remove();
+                }
+                
+                if (!videoContainer.querySelector('iframe')) {
+                    videoContainer.appendChild(iframe);
+                    
+                    iframe.addEventListener('load', function() {
+                        setTimeout(function() {
+                            setBilibiliPlayerSettings(iframe);
+                        }, 2000);
+                    });
+                }
+            }
+        }
+        
+        function setBilibiliPlayerSettings(iframe) {
+            try {
+                iframe.contentWindow.postMessage(JSON.stringify({
+                    'cmd': 'quality',
+                    'quality': 64
+                }), 'https://player.bilibili.com');
+                
+                setTimeout(function() {
+                    iframe.contentWindow.postMessage(JSON.stringify({
+                        'cmd': 'volume',
+                        'volume': 20
+                    }), 'https://player.bilibili.com');
+                }, 500);
+            } catch(e) {
+                console.log('Failed to set player settings:', e);
+            }
+        }
+        
+        function switchVideoMode(card) {
+            document.querySelectorAll('.game-card').forEach(function(c) {
+                c.classList.remove('video-mode');
+                var iframe = c.querySelector('.video-container iframe');
+                if (iframe) {
+                    iframe.remove();
+                }
+            });
+            setTimeout(function() {
+                enterVideoMode(card);
+            }, 100);
+        }
+        
+        function exitVideoMode() {
+            document.querySelectorAll('.game-card').forEach(function(card) {
+                card.classList.remove('video-mode');
+                var iframe = card.querySelector('.video-container iframe');
+                if (iframe) {
+                    iframe.remove();
+                }
+            });
+            isVideoMode = false;
+        }
+        
+        function convertToBilibiliEmbed(url) {
+            var videoId = extractBilibiliVideoId(url);
+            var pageNum = extractBilibiliPage(url);
+            if (videoId) {
+                return 'https://player.bilibili.com/player.html?bvid=' + videoId + '&page=' + pageNum + '&high_quality=1&danmaku=1';
+            }
+            return url;
+        }
+        
+        function extractBilibiliVideoId(url) {
+            var match = url.match(/(BV[\w]+)|(av\d+)/);
+            if (match) {
+                return match[1] || match[2];
+            }
+            return null;
+        }
+        
+        function extractBilibiliPage(url) {
+            var match = url.match(/[?&]p=(\d+)/);
+            if (match) {
+                return match[1];
+            }
+            return '1';
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                exitVideoMode();
+            }
+        });
+        
+        function initGameAnimations() {
+            if (typeof gsap === 'undefined') return;
+            gsap.registerPlugin(ScrollTrigger);
+            
+            const titleInner = document.querySelector('.page-title .title-inner');
+            const title = document.querySelector('.page-title');
+            const intro = document.querySelector('.game-intro');
+            const cards = document.querySelectorAll('.game-card');
+            
+            const tl = gsap.timeline({ delay: 0.3 });
+            
+            if (titleInner && title) {
+                tl.from(titleInner, {
+                    yPercent: 120,
+                    duration: 1.2,
+                    ease: 'power4.out'
+                }, 0.2);
+                
+                tl.from(title, {
+                    scaleY: 0.7,
+                    duration: 1,
+                    ease: 'power3.out'
+                }, 0.1);
+            }
+            
+            if (intro) {
+                gsap.to(intro, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: intro,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            }
+            
+            if (cards.length) {
+                gsap.to(cards, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    stagger: 0.12,
+                    scrollTrigger: {
+                        trigger: '.game-list',
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            }
+            
+            document.querySelectorAll('.game-icon').forEach(img => {
+                img.addEventListener('mouseenter', () => {
+                    gsap.to(img, { scale: 1.1, duration: 0.5, ease: 'power2.out' });
+                });
+                img.addEventListener('mouseleave', () => {
+                    gsap.to(img, { scale: 1, duration: 0.5, ease: 'power2.out' });
+                });
+            });
+        }
+        
+        window.addEventListener('load', initGameAnimations);
+    </script>
+</body>
+</html>

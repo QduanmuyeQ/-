@@ -1,0 +1,171 @@
+body{
+	font-size: 17px;
+	margin: 0;
+	background: transparent;
+	background-size: 100% 100%;
+	background-attachment: fixed;
+}
+ul {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	display: flex;
+}
+ul li{
+	text-align: center;
+	border: 1px solid #d4d4d4;
+	border-radius: 20px;
+	font-family: ziti;
+}
+ul li:nth-child(1) {
+	background-color: rgba(136,220,214,1);
+}
+ul li:nth-child(2) {
+	background: linear-gradient(90deg, rgba(198,244,117,1) 25%, rgba(249,199,209,1) 75%);
+}
+ul li:nth-child(3) {
+	background-color: rgba(255,201,101,1);
+}
+@font-face {
+	font-family: ziti;
+	src: url('../font/zcool.ttf');
+}
+@keyframes donghua{
+	from{
+		transform: rotate(0deg);
+	}
+	to{
+		transform: rotate(360deg);
+	}
+}
+ul li:first-child img:hover{
+	animation-name: donghua;
+	animation-duration: 5s;
+	animation-iteration-count: infinite;
+}
+ul li{
+	flex-grow: 1;
+}
+#down{
+	column-count: 3;
+	column-gap: 10px;
+	column-width: 200px;
+}
+a {
+	text-decoration: none;
+	transition: all 0.4s;
+}
+a:hover {
+	color: orangered;
+}
+.MusicN {
+	background:#00ad45; 
+	color:#FFFFFF;
+	font-size:100%; 
+	padding:2px; 
+	border:2px #00ad45; 
+	border-style:solid; 
+	border-radius:10px;
+	width: 500px;
+}
+.MikuL{
+	font-size:90%; 
+	padding:2px; 
+	border:2px #5ecc62; 
+	border-style:solid;
+	border-radius:10px; 
+	background: #5ecc62;
+	width: 500px;
+}
+.HSL {
+	font-size:85%;
+	padding:2px; 
+	border:2px #5ecc62;
+	background: #5ecc62;
+	border-style:solid; 
+	border-radius:10px; 
+}
+.DCL{
+	font-size:85%; 
+	padding:2px; 
+	border:2px #5ecc62;
+	background: #5ecc62;
+	border-style:solid; 
+	border-radius:10px; 
+	width: 500px;
+}
+#aMiku{
+	color: #39C5BB;
+}
+#aMiku:hover {
+	color: orangered;
+}
+#awowaka{
+	color: white;
+}
+#awowaka:hover {
+	color: orangered;
+}
+#aEasy{
+	color: white;
+}
+#aEasy:hover {
+	color: orangered;
+}
+#airoha{
+	color: white;
+}
+#airoha:hover {
+	color: orangered;
+}
+#aLuka{
+	color: #FAAFBE;
+}
+#aLuka:hover {
+	color: orangered;
+}
+#aGumi{
+	color: #A0EE00;
+}
+#aGumi:hover {
+	color: orangered;
+}
+#aRin{
+	color: #FFA500;
+}
+#aRin:hover {
+	color: orangered;
+}
+#aLen{
+	color: #FFE211;
+}
+#aLen:hover {
+	color: orangered;
+}
+.bilibili {
+	color: #1cb3e6;
+}
+.niconico {
+	color: white;
+}
+.audio audio {
+	position: relative;
+	left: 10%;
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+}
+
+::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(136, 220, 220, 0.4);
+	border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(136, 220, 220, 0.6);
+}

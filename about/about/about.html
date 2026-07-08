@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<link rel="stylesheet" href="../../css/about.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+		<style>
+			#Toptitle { overflow: hidden; display: inline-block; }
+			#Toptitle .title-inner { display: inline-block; }
+			.Top { opacity: 0; }
+			.Buttom { opacity: 0; }
+			.Buttom img { transform: scale(0.8); opacity: 0; }
+			.Buttom table { opacity: 0; }
+		</style>
+	</head>
+	<body>
+		<div class="All">
+				<div class="Top">
+					<h1 id="Toptitle"><b><span class="title-inner">作者资料</span></b></h1>
+					<div class="Xiantiao" style="border-top:1px dashed orange;">
+					</div>
+					<h3 id="Topword"> &nbsp;&nbsp;&nbsp;&nbsp;目前就读广东建设职业技术学院的计算机应用专业。正在学习前端开发等计算机技能，热爱单机游戏，常与好友一起打乒乓球、羽毛球。</h3>
+				</div>
+			<div class="Buttom">
+					<img src="img/TouXiang11.png" width="300px">
+				<table>
+					<tr>
+						<td>手机 | 13682XXXXXX</td>
+					</tr>
+					<tr>
+						<td>邮箱 | 207XXX1XX0@qq.com</td>
+					</tr>
+					<tr>
+						<td>QQ号 | 207XXX1XX0</td>
+					</tr>
+					<tr>
+						<td>户籍 | 广东省XX市</td>
+					</tr>
+					<tr>
+						<td>学校 | 广东建设职业技术学院</td>
+					</tr>
+					<tr>
+						<td></td>
+					</tr>
+				</table>
+				<table>
+						<tr>	
+							<td>姓名 | 张炫羽</td>
+						</tr>
+						<tr>
+							<td>性别 | 男</td>
+						</tr>
+						<tr>
+							<td>出生 | 200X.0X.11</td>	
+						</tr>
+						<tr>
+							<td>学历 | 大专</td>
+						</tr>
+						<tr>
+							<td>专业 | 计算机应用技术</td>
+						</tr>
+				</table>
+			</div>
+		</div>
+		<script>
+			window.addEventListener('load', function() {
+				if (typeof gsap === 'undefined') return;
+				gsap.registerPlugin(ScrollTrigger);
+				
+				const titleInner = document.querySelector('#Toptitle .title-inner');
+				const title = document.querySelector('#Toptitle');
+				const topSection = document.querySelector('.Top');
+				const bottomSection = document.querySelector('.Buttom');
+				const avatar = document.querySelector('.Buttom img');
+				const tables = document.querySelectorAll('.Buttom table');
+				
+				const tl = gsap.timeline({ delay: 0.3 });
+				
+				if (titleInner && title) {
+					tl.from(titleInner, {
+						yPercent: 120,
+						duration: 1.2,
+						ease: 'power4.out'
+					}, 0.2);
+					
+					tl.from(title, {
+						scaleY: 0.7,
+						duration: 1,
+						ease: 'power3.out'
+					}, 0.1);
+				}
+				
+				tl.to(topSection, {
+					opacity: 1,
+					duration: 0.8,
+					ease: 'power3.out'
+				}, 0.3);
+				
+				tl.to(bottomSection, {
+					opacity: 1,
+					duration: 0.8,
+					ease: 'power3.out'
+				}, 0.9);
+				
+				if (avatar) {
+					tl.to(avatar, {
+						scale: 1,
+						opacity: 1,
+						duration: 1,
+						ease: 'power3.out'
+					}, 1);
+				}
+				
+				if (tables.length) {
+					tl.to(tables, {
+						opacity: 1,
+						duration: 0.8,
+						ease: 'power3.out',
+						stagger: 0.2
+					}, 1.2);
+				}
+			});
+		</script>
+	</body>
+</html>

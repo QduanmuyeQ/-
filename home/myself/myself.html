@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myself - 时间记录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: transparent;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(136, 220, 220, 0.3);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-30px) rotate(180deg); opacity: 0.8; }
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(90deg, #88DCDC, #FFB6C1, #88DCDC);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s linear infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .stats-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 35px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(136, 220, 220, 0.2);
+        }
+
+        .stat-header {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 25px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .stat-header span {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(136, 220, 220, 0.15);
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .time-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #88DCDC;
+            text-shadow: 0 0 20px rgba(136, 220, 220, 0.3);
+            line-height: 1;
+        }
+
+        .time-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 8px;
+        }
+
+        .stat-card:nth-child(2) .time-value {
+            color: #FFB6C1;
+            text-shadow: 0 0 20px rgba(255, 182, 193, 0.3);
+        }
+
+        .stat-card:nth-child(2) .stat-header span {
+            background: rgba(255, 182, 193, 0.15);
+        }
+
+        .stat-card:nth-child(2):hover {
+            box-shadow: 0 15px 50px rgba(255, 182, 193, 0.2);
+        }
+
+        .stat-card:nth-child(3) .time-value {
+            color: #98FB98;
+            text-shadow: 0 0 20px rgba(152, 251, 152, 0.3);
+        }
+
+        .stat-card:nth-child(3) .stat-header span {
+            background: rgba(152, 251, 152, 0.15);
+        }
+
+        .stat-card:nth-child(3):hover {
+            box-shadow: 0 15px 50px rgba(152, 251, 152, 0.2);
+        }
+
+        .separator {
+            font-size: 36px;
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(136, 220, 220, 0.4);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(136, 220, 220, 0.6);
+        }
+
+        @media (max-width: 600px) {
+            .title {
+                font-size: 28px;
+            }
+
+            .time-value {
+                font-size: 32px;
+            }
+
+            .stat-card {
+                padding: 25px 20px;
+            }
+
+            .separator {
+                font-size: 24px;
+            }
+        }
+    </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <div class="bg-decoration">
+        <div class="particle" style="left: 15%; top: 20%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 35%; top: 60%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 55%; top: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 75%; top: 70%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 90%; top: 40%; animation-delay: 1s;"></div>
+    </div>
+
+    <h1 class="title">⏱ My Time</h1>
+
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-header"><span>🌍 来到这个世界</span></div>
+            <div class="time-display">
+                <div class="time-unit">
+                    <div class="time-value" id="daysAlive">0</div>
+                    <div class="time-label">天</div>
+                </div>
+                <div class="separator">天</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header"><span>🎂 距离生日</span></div>
+            <div class="time-display">
+                <div class="time-unit">
+                    <div class="time-value" id="birthdayMonths">0</div>
+                    <div class="time-label">月</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="time-unit">
+                    <div class="time-value" id="birthdayDays">0</div>
+                    <div class="time-label">天</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="time-unit">
+                    <div class="time-value" id="birthdayHours">0</div>
+                    <div class="time-label">时</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="time-unit">
+                    <div class="time-value" id="birthdayMinutes">0</div>
+                    <div class="time-label">分</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="time-unit">
+                    <div class="time-value" id="birthdaySeconds">0</div>
+                    <div class="time-label">秒</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-header"><span>🏫 广建新生活</span></div>
+            <div class="time-display">
+                <div class="time-unit">
+                    <div class="time-value" id="guangjianMonths">0</div>
+                    <div class="time-label">月</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="time-unit">
+                    <div class="time-value" id="guangjianDays">0</div>
+                    <div class="time-label">天</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="time-unit">
+                    <div class="time-value" id="guangjianHours">0</div>
+                    <div class="time-label">时</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="time-unit">
+                    <div class="time-value" id="guangjianMinutes">0</div>
+                    <div class="time-label">分</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="time-unit">
+                    <div class="time-value" id="guangjianSeconds">0</div>
+                    <div class="time-label">秒</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BIRTHDAY_YEAR = 2007;
+        const BIRTHDAY_MONTH = 2;
+        const BIRTHDAY_DAY = 11;
+        const GUANGJIAN_START = new Date(2025, 8, 12);
+
+        function updateTime() {
+            const now = new Date();
+
+            const birthDate = new Date(BIRTHDAY_YEAR, BIRTHDAY_MONTH, BIRTHDAY_DAY);
+            const diffAlive = now - birthDate;
+            const daysAlive = Math.floor(diffAlive / (1000 * 60 * 60 * 24));
+            document.getElementById('daysAlive').textContent = daysAlive;
+
+            let nextBirthday = new Date(now.getFullYear(), BIRTHDAY_MONTH, BIRTHDAY_DAY);
+            if (now > nextBirthday) {
+                nextBirthday = new Date(now.getFullYear() + 1, BIRTHDAY_MONTH, BIRTHDAY_DAY);
+            }
+            const diffBirthday = nextBirthday - now;
+            
+            const birthdayYears = Math.floor(diffBirthday / (1000 * 60 * 60 * 24 * 365));
+            const birthdayMonths = Math.floor((diffBirthday % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30.4375));
+            const birthdayDays = Math.floor((diffBirthday % (1000 * 60 * 60 * 24 * 30.4375)) / (1000 * 60 * 60 * 24));
+            const birthdayHours = Math.floor((diffBirthday % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const birthdayMinutes = Math.floor((diffBirthday % (1000 * 60 * 60)) / (1000 * 60));
+            const birthdaySeconds = Math.floor((diffBirthday % (1000 * 60)) / 1000);
+
+            document.getElementById('birthdayMonths').textContent = birthdayMonths.toString().padStart(2, '0');
+            document.getElementById('birthdayDays').textContent = birthdayDays.toString().padStart(2, '0');
+            document.getElementById('birthdayHours').textContent = birthdayHours.toString().padStart(2, '0');
+            document.getElementById('birthdayMinutes').textContent = birthdayMinutes.toString().padStart(2, '0');
+            document.getElementById('birthdaySeconds').textContent = birthdaySeconds.toString().padStart(2, '0');
+
+            const diffGuangjian = now - GUANGJIAN_START;
+            const guangjianYears = Math.floor(diffGuangjian / (1000 * 60 * 60 * 24 * 365));
+            const guangjianMonths = Math.floor((diffGuangjian % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30.4375));
+            const guangjianDays = Math.floor((diffGuangjian % (1000 * 60 * 60 * 24 * 30.4375)) / (1000 * 60 * 60 * 24));
+            const guangjianHours = Math.floor((diffGuangjian % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const guangjianMinutes = Math.floor((diffGuangjian % (1000 * 60 * 60)) / (1000 * 60));
+            const guangjianSeconds = Math.floor((diffGuangjian % (1000 * 60)) / 1000);
+
+            document.getElementById('guangjianMonths').textContent = guangjianMonths.toString().padStart(2, '0');
+            document.getElementById('guangjianDays').textContent = guangjianDays.toString().padStart(2, '0');
+            document.getElementById('guangjianHours').textContent = guangjianHours.toString().padStart(2, '0');
+            document.getElementById('guangjianMinutes').textContent = guangjianMinutes.toString().padStart(2, '0');
+            document.getElementById('guangjianSeconds').textContent = guangjianSeconds.toString().padStart(2, '0');
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+<script>
+window.addEventListener('load', function() {
+    if (typeof gsap === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 找到页面中的主要元素
+    const mainTitle = document.querySelector('h1, .title, .main-title');
+    const cards = document.querySelectorAll('.stat-card, .card, .time-card, .item, .timeline-item, .content-card');
+    const sections = document.querySelectorAll('section, .section, .content > div');
+
+    if (mainTitle) {
+        gsap.from(mainTitle, {
+            y: 60,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'power4.out',
+            delay: 0.3
+        });
+    }
+
+    if (cards.length) {
+        gsap.from(cards, {
+            y: 50,
+            opacity: 0,
+            duration: 0.9,
+            ease: 'power3.out',
+            stagger: 0.12,
+            scrollTrigger: {
+                trigger: cards[0],
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+    }
+
+    if (sections.length && !cards.length) {
+        gsap.from(sections, {
+            y: 50,
+            opacity: 0,
+            duration: 0.9,
+            ease: 'power3.out',
+            stagger: 0.15,
+            scrollTrigger: {
+                trigger: sections[0],
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>

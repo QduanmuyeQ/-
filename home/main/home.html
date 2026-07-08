@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>自定义的起始页</title>
+    <link rel="stylesheet" href="../../css/home.css">
+  </head>
+  <body onload="init()">
+    <div class="bg-container" id="bgContainer">
+      <div class="bg-image"></div>
+    </div>
+    <div class="content">
+      <div class="time-display" id="timeDisplay"></div>
+      <div id="SskOut">
+        <form action="https://www.bing.com/search" method="get" target="_blank" id="searchF">
+          <input type="text" name="q" placeholder="今天你想搜什么捏~(￣▽￣)~？" id="searchSK"/>
+          <input type="submit" value="" id="searchB"/>
+        </form>
+      </div>
+    </div>
+    <script>
+      function init() {
+        updateTime();
+        setInterval(updateTime, 1000);
+        
+        var searchSK = document.getElementById('searchSK');
+        var bgContainer = document.getElementById('bgContainer');
+        var searchF = document.getElementById('searchF');
+        
+        searchSK.addEventListener('focus', function() {
+          bgContainer.classList.add('active');
+          searchF.classList.add('focused');
+          searchSK.classList.add('focused');
+        });
+        
+        searchSK.addEventListener('blur', function() {
+          bgContainer.classList.remove('active');
+          searchF.classList.remove('focused');
+          searchSK.classList.remove('focused');
+        });
+      }
+      
+      function updateTime() {
+        var now = new Date();
+        var hours = String(now.getHours()).padStart(2, '0');
+        var minutes = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('timeDisplay').textContent = hours + ':' + minutes;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+body{
+	border-radius: 20px;
+	background-color: transparent;
+}
+th {
+	background-color: #CC4488;
+	color: white;
+	text-align: center;
+	padding: 1em;
+}
+
+#left {
+	float: left;
+	width: 70%;
+}
+#right {
+	margin-top: 10px;
+	float: right;
+}
+.TL {
+	min-width: 80px;
+	background-color: #E6B3CC;
+}
+.TR {
+	min-width: 195px;
+}
+#All {
+	padding: 20px;
+}
+p {
+	margin-top: 10px;
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+}
+
+::-webkit-scrollbar-track {
+	background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(136, 220, 220, 0.4);
+	border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(136, 220, 220, 0.6);
+}

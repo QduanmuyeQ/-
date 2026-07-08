@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>意见反馈</title>
+    <link rel="stylesheet" href="../../css/comment.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        .feedback-content { max-width: 550px; margin: 0 auto; padding: 30px 20px; color: white; }
+        .feedback-content h1 { text-align: center; margin-bottom: 22px; color: #88DCDC; font-size: 26px; }
+        .feedback-form { background: rgba(255,255,255,0.08); padding: 28px 30px; border-radius: 18px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 7px; color: #FFB6C1; font-size: 13px; font-weight: bold; }
+        .form-group input, .form-group textarea { width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: white; font-size: 13px; transition: all 0.3s ease; box-sizing: border-box; font-family: inherit; }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: #888; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #88DCDC; background: rgba(255,255,255,0.1); box-shadow: 0 0 15px rgba(136, 220, 220, 0.2); }
+        .form-group textarea { height: 110px; resize: vertical; line-height: 1.5; }
+        .submit-btn { display: block; width: 100%; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(90deg, #88DCDC, #FFB6C1); color: white; cursor: pointer; font-size: 15px; font-weight: bold; transition: transform 0.2s, box-shadow 0.2s; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(136, 220, 220, 0.3); }
+        .submit-btn:active { transform: translateY(0); }
+        .tips { margin-top: 15px; font-size: 12px; color: #aaa; text-align: center; line-height: 1.6; }
+        .tips p { margin: 3px 0; }
+        .type-selector { display: flex; gap: 8px; margin-bottom: 16px; }
+        .type-option { flex: 1; padding: 8px; text-align: center; border-radius: 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; font-size: 12px; transition: all 0.2s; }
+        .type-option:hover { background: rgba(255,255,255,0.1); }
+        .type-option.active { background: rgba(136, 220, 220, 0.2); border-color: #88DCDC; color: #88DCDC; }
+        .success-msg { display: none; text-align: center; padding: 25px 15px; }
+        .success-msg.show { display: block; animation: successFade 0.5s ease; }
+        @keyframes successFade { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+        .success-icon { font-size: 50px; margin-bottom: 12px; }
+        .success-msg h3 { color: #88DCDC; margin-bottom: 8px; font-size: 20px; }
+        .success-msg p { color: #aaa; font-size: 13px; }
+        .feedback-content h1 { overflow: hidden; display: inline-block; }
+        .feedback-content h1 .title-inner { display: inline-block; }
+        .page-header { text-align: center; margin-bottom: 22px; }
+        .feedback-form { opacity: 0; transform: translateY(40px); }
+        .type-option { opacity: 0; transform: translateY(20px); }
+    </style>
+</head>
+<body>
+    <div class="feedback-content">
+        <div class="page-header">
+            <h1 class="page-title"><span class="title-inner">💌 意见反馈</span></h1>
+        </div>
+        
+        <div class="feedback-form" id="feedbackForm">
+            <div class="type-selector">
+                <div class="type-option active" data-type="建议">💡 建议</div>
+                <div class="type-option" data-type="bug">🐛 Bug反馈</div>
+                <div class="type-option" data-type="其他">💬 其他</div>
+            </div>
+            <form onsubmit="submitFeedback(event)">
+                <div class="form-group">
+                    <label>你的昵称</label>
+                    <input type="text" id="feedbackName" placeholder="怎么称呼你呢~" required>
+                </div>
+                <div class="form-group">
+                    <label>联系方式（选填）</label>
+                    <input type="text" id="feedbackContact" placeholder="QQ、邮箱或其他方式">
+                </div>
+                <div class="form-group">
+                    <label>反馈内容</label>
+                    <textarea id="feedbackContent" placeholder="有什么想说的都可以写在这里~" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">提交反馈</button>
+            </form>
+        </div>
+        
+        <div class="feedback-form success-msg" id="successMsg">
+            <div class="success-icon">🎉</div>
+            <h3>提交成功！</h3>
+            <p>感谢你的反馈，我们会认真查看每一条意见~</p>
+            <p style="margin-top: 15px; color: #88DCDC; cursor: pointer;" onclick="resetFeedback()">再提交一条</p>
+        </div>
+        
+        <div class="tips">
+            <p>💡 你的每一条建议都是我们进步的动力</p>
+            <p>🐛 发现Bug？欢迎告诉我们！</p>
+        </div>
+    </div>
+    
+    <script>
+        let feedbackType = '建议';
+        document.querySelectorAll('.type-option').forEach(opt => {
+            opt.addEventListener('click', function() {
+                document.querySelectorAll('.type-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                feedbackType = this.dataset.type;
+            });
+        });
+        
+        function submitFeedback(e) {
+            e.preventDefault();
+            const name = document.getElementById('feedbackName').value;
+            const contact = document.getElementById('feedbackContact').value;
+            const content = document.getElementById('feedbackContent').value;
+            
+            let list = JSON.parse(localStorage.getItem('feedbackList') || '[]');
+            list.push({ name, contact, content, type: feedbackType, time: new Date().toLocaleString() });
+            localStorage.setItem('feedbackList', JSON.stringify(list));
+            
+            document.getElementById('feedbackForm').style.display = 'none';
+            document.getElementById('successMsg').classList.add('show');
+        }
+        
+        function resetFeedback() {
+            document.getElementById('feedbackForm').style.display = 'block';
+            document.getElementById('successMsg').classList.remove('show');
+            document.getElementById('feedbackName').value = '';
+            document.getElementById('feedbackContact').value = '';
+            document.getElementById('feedbackContent').value = '';
+        }
+    </script>
+    <script>
+        window.addEventListener('load', function() {
+            if (typeof gsap === 'undefined') return;
+            
+            const titleInner = document.querySelector('.page-title .title-inner');
+            const title = document.querySelector('.page-title');
+            const form = document.querySelector('.feedback-form');
+            const typeOptions = document.querySelectorAll('.type-option');
+            
+            const tl = gsap.timeline({ delay: 0.3 });
+            
+            if (titleInner && title) {
+                tl.from(titleInner, {
+                    yPercent: 120,
+                    duration: 1.2,
+                    ease: 'power4.out'
+                }, 0.2);
+                
+                tl.from(title, {
+                    scaleY: 0.7,
+                    duration: 1,
+                    ease: 'power3.out'
+                }, 0.1);
+            }
+            
+            if (form) {
+                tl.to(form, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out'
+                }, 0.7);
+            }
+            
+            if (typeOptions.length) {
+                tl.to(typeOptions, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: 'power3.out',
+                    stagger: 0.1
+                }, 1);
+            }
+        });
+    </script>
+</body>
+</html>

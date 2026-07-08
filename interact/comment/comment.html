@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="../../css/comment.css">
+		<script src="../../js/jquery-3.6.3.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+		<script>
+			var defaultComments = [
+				{
+					id: 1,
+					avatar: "img/TouXiang1.jpg",
+					username: "duan_mu_ye",
+					color: "#FB7299",
+					level: "Lv114514",
+					badge: "站长",
+					badgeClass: "up",
+					sticky: true,
+					content: "请各位站友在评论区积极讨论，理性发言。建设文明网络环境！",
+					time: "2026-06-9 09:10",
+					likes: 114514,
+					replies: 0,
+					forward: 387
+				},
+				{
+					id: 2,
+					avatar: "img/Touxiang2.png",
+					username: "想不到名字的忠诚站友",
+					color: "#61666d",
+					level: "Lv4",
+					badge: "",
+					badgeClass: "",
+					sticky: false,
+					content: "收到！站长！！！！",
+					time: "2026-06-9 10:50",
+					likes: 251,
+					replies: 77,
+					forward: 19
+				},
+				{
+					id: 3,
+					avatar: "img/Touxiang3.png",
+					username: "地平线",
+					color: "#61666d",
+					level: "Lv5",
+					badge: "",
+					badgeClass: "",
+					sticky: false,
+					content: "科学永不眠，我们也一样，对吗纽特？",
+					time: "2026-06-9 17:10",
+					likes: 74751,
+					replies: 0,
+					forward: 173
+				},
+				{
+					id: 4,
+					avatar: "img/TouXiang4.jpg",
+					username: "Warma",
+					color: "#FB7299",
+					level: "Lv6",
+					badge: "年度大会员",
+					badgeClass: "VIP",
+					sticky: false,
+					content: "小心蜘蛛，呜呜呜/(ㄒoㄒ)/~~",
+					time: "2026-06-9 17:10",
+					likes: 12660,
+					replies: 0,
+					forward: 821
+				},
+				{
+					id: 5,
+					avatar: "img/TouXiang5.jpg",
+					username: "Rem",
+					color: "#FB7299",
+					level: "Lv6",
+					badge: "年度大会员",
+					badgeClass: "VIP",
+					sticky: false,
+					content: "就算再艰辛痛苦,\n就算站长坚持不下去,\n哪怕世上的人都不相信站长,\n就连站长自己都不相信自己,\n雷姆也会相信站长的。",
+					time: "2026-06-9 17:10",
+					likes: 999520,
+					replies: 0,
+					forward: 5555
+				}
+			];
+
+			var storedComments = localStorage.getItem('customComments');
+			var comments = storedComments ? JSON.parse(storedComments) : defaultComments;
+			var nextId = Math.max(...comments.map(c => c.id)) + 1;
+
+			function saveComments() {
+				localStorage.setItem('customComments', JSON.stringify(comments));
+			}
+
+			function renderComments() {
+				var list = $("#list_01");
+				list.empty();
+				$.each(comments, function(index, comment) {
+					var badgeHtml = comment.badge ? '<span class="' + comment.badgeClass + '">' + comment.badge + '</span>' : '';
+					var stickyHtml = comment.sticky ? '<span id="zhiding">置顶</span>' : '';
+					var contentHtml = comment.content.replace(/\n/g, '<br />');
+					
+					var li = $('<li>').data('id', comment.id).css({
+						opacity: 0,
+						transform: 'translateY(30px)'
+					}).html([
+						'<img src="' + comment.avatar + '" class="touxiang"/>',
+						'<span class="usern" style="color: ' + comment.color + ';">' + comment.username + '</span>',
+						'&nbsp;&nbsp;<span class="lv1">' + comment.level + '</span>',
+						'&nbsp;&nbsp;' + badgeHtml,
+						'<br />',
+						stickyHtml,
+						'<span class="comment-content">' + contentHtml + '</span>',
+						'<span class="zan">',
+						'<span class="time">' + comment.time + '</span>&nbsp;&nbsp;&nbsp;',
+						'<img src="img/2.png" class="tubiao"/>&nbsp;' + comment.likes + '&nbsp;&nbsp;',
+						'<img src="img/3.png" class="tubiao"/>&nbsp;' + comment.replies + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+						'<img src="img/4.png" class="tubiao"/>&nbsp;' + comment.forward,
+						'</span>',
+						'<span class="actions">',
+						'<button class="edit-btn">编辑</button>',
+						'<button class="delete-btn">删除</button>',
+						'</span>'
+					].join(''));
+					list.append(li);
+				});
+				
+				if (typeof gsap !== 'undefined') {
+					gsap.to('#list_01 li', {
+						y: 0,
+						opacity: 1,
+						duration: 0.7,
+						ease: 'power3.out',
+						stagger: 0.1,
+						delay: 0.1
+					});
+				}
+			}
+
+			$(function() {
+				var placeholders = [
+					'尊重是评论打动人心的入场卷',
+					'宫廷玉液酒，评论走一走',
+					'评论千万条，等你发一条',
+					'万水千山总是情，评论两句行不行',
+					'勇敢滴少年啊快去创造热评~'
+				];
+				var randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)];
+				$('#comment-input').attr('placeholder', randomPlaceholder);
+
+				renderComments();
+
+				$(document).on('mouseenter', '#list_01 li', function() {
+					$(this).siblings().stop().fadeTo(400, 0.25);
+					$(this).find('.actions').show();
+				});
+
+				$(document).on('mouseleave', '#list_01 li', function() {
+					$(this).siblings().stop().fadeTo(400, 1);
+					$(this).find('.actions').hide();
+				});
+
+				$('#publish-btn').click(function() {
+					var content = $('#comment-input').val().trim();
+					if (!content) {
+						alert('请输入评论内容');
+						return;
+					}
+
+					var now = new Date();
+					var timeStr = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' ' + 
+						now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes());
+
+					var newComment = {
+						id: nextId++,
+						avatar: "img/Touxiang2.png",
+						username: "匿名用户",
+						color: "#61666d",
+						level: "Lv1",
+						badge: "",
+						badgeClass: "",
+						sticky: false,
+						content: content,
+						time: timeStr,
+						likes: 0,
+						replies: 0,
+						forward: 0
+					};
+
+					comments.unshift(newComment);
+					saveComments();
+					renderComments();
+					$('#comment-input').val('');
+				});
+
+				$(document).on('click', '.delete-btn', function() {
+					if (confirm('确定要删除这条评论吗？')) {
+						var id = $(this).closest('li').data('id');
+						comments = comments.filter(function(c) {
+							return c.id !== id;
+						});
+						saveComments();
+						renderComments();
+					}
+				});
+
+				$(document).on('click', '.edit-btn', function() {
+					var li = $(this).closest('li');
+					var id = li.data('id');
+					var comment = comments.find(function(c) {
+						return c.id === id;
+					});
+
+					if (!comment) return;
+
+					var wordSpan = li.find('.comment-content');
+					var actions = li.find('.actions');
+					var currentContent = comment.content;
+
+					var textarea = $('<textarea>').addClass('edit-textarea').val(currentContent);
+					var saveBtn = $('<button>').addClass('save-btn').text('保存');
+					var cancelBtn = $('<button>').addClass('cancel-btn').text('取消');
+
+					wordSpan.replaceWith(textarea);
+					actions.empty().append(saveBtn).append(cancelBtn).show();
+
+					saveBtn.click(function() {
+						var newContent = textarea.val().trim();
+						if (newContent) {
+							comment.content = newContent;
+							saveComments();
+						}
+						renderComments();
+					});
+
+					cancelBtn.click(function() {
+						renderComments();
+					});
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="right">
+			<div class="comment-form" style="opacity:0;">
+				<textarea id="comment-input"></textarea>
+				<button id="publish-btn">发布评论</button>
+			</div>
+			<ul id="list_01"></ul>
+		</div>
+		<script>
+			window.addEventListener('load', function() {
+				if (typeof gsap === 'undefined') return;
+				
+				gsap.to('.comment-form', {
+					opacity: 1,
+					duration: 0.8,
+					delay: 0.3,
+					ease: 'power3.out'
+				});
+			});
+		</script>
+	</body>
+</html>

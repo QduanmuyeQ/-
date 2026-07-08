@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>欢迎来到端木记事本</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            font-family: 'Microsoft YaHei', 微软雅黑, sans-serif;
+        }
+        .welcome-content {
+            text-align: center;
+            padding: 20px 50px 100px;
+            color: white;
+            min-height: 700px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: -100px;
+        }
+        .welcome-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            overflow: hidden;
+            display: inline-block;
+        }
+        .welcome-content h1 .title-inner {
+            display: inline-block;
+        }
+        .welcome-content p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .hero-subtitle {
+            opacity: 0;
+        }
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            width: 250px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(60px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, box-shadow 0.4s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .feature-card h3 {
+            color: #88DCDC;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .feature-card p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
+        }
+        .bottom-text {
+            margin-top: 40px;
+            font-size: 16px;
+            opacity: 0;
+        }
+        .title-underline {
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #88DCDC, transparent);
+            margin: 0 auto 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-content">
+        <h1 class="hero-title">
+            <span class="title-inner">🎵 欢迎来到端木记事本</span>
+        </h1>
+        <div class="title-underline"></div>
+        <p class="hero-subtitle">这里是一个分享音乐、动漫、游戏等精彩内容的个人空间。<br>让我们一起探索二次元的奇妙世界！</p>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>🎶 音乐分享</h3>
+                <p>收录经典VOCALOID歌曲，感受电子音乐的魅力</p>
+            </div>
+            <div class="feature-card">
+                <h3>📺 动漫推荐</h3>
+                <p>精选优秀动漫作品，探索精彩的二次元世界</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎮 游戏交流</h3>
+                <p>分享游戏心得，交流游戏技巧</p>
+            </div>
+        </div>
+        
+        <p class="bottom-text">感谢您的访问，祝您浏览愉快！</p>
+    </div>
+    <script>
+        var animationsStarted = false;
+        
+        function startWelcomeAnimations() {
+            if (animationsStarted) return;
+            animationsStarted = true;
+            
+            window.scrollTo(0, 0);
+            
+            if (typeof gsap === 'undefined') return;
+            gsap.registerPlugin(ScrollTrigger);
+            
+            const tl = gsap.timeline();
+            
+            const titleInner = document.querySelector('.hero-title .title-inner');
+            const title = document.querySelector('.hero-title');
+            const underline = document.querySelector('.title-underline');
+            const subtitle = document.querySelector('.hero-subtitle');
+            const cards = document.querySelectorAll('.feature-card');
+            const bottomText = document.querySelector('.bottom-text');
+            
+            tl.from(titleInner, {
+                yPercent: 120,
+                duration: 1.4,
+                ease: 'power4.out'
+            }, 0.2);
+            
+            tl.from(title, {
+                scaleY: 0.7,
+                scaleX: 0.9,
+                duration: 1.2,
+                ease: 'power3.out'
+            }, 0.1);
+            
+            tl.to(underline, {
+                width: '60%',
+                duration: 1,
+                ease: 'power3.inOut'
+            }, 0.9);
+            
+            tl.to(subtitle, {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: 'power3.out'
+            }, 1.1);
+            
+            tl.to(cards, {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: 'power3.out',
+                stagger: 0.18
+            }, 1.4);
+            
+            tl.to(bottomText, {
+                y: 0,
+                opacity: 0.7,
+                duration: 0.8,
+                ease: 'power3.out'
+            }, 2);
+        }
+        
+        window.onload = function() {
+            try {
+                if (window.parent && window.parent.welcomeAnimReady) {
+                    startWelcomeAnimations();
+                }
+            } catch(e) {
+                startWelcomeAnimations();
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>美/英剧推荐</title>
+    <link rel="stylesheet" type="text/css" href="../../css/bingguo.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        .drama-page {
+            padding: 20px;
+            color: white;
+        }
+        .drama-page h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #CC4488;
+        }
+        .drama-category {
+            margin-bottom: 30px;
+        }
+        .drama-category h2 {
+            color: #FFA500;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #FFA500;
+            padding-bottom: 5px;
+        }
+        .drama-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .drama-card {
+            position: relative;
+            background: rgba(255,255,255,0.08);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .drama-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.12);
+        }
+        .drama-card.active {
+            grid-column: span 2;
+            animation: cardExpand 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            z-index: 10;
+        }
+        @keyframes cardExpand {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.02);
+                opacity: 0.9;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .drama-card img {
+            width: 180px;
+            height: 250px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+        .drama-card h3 {
+            color: #FFD700;
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+        .drama-card .category {
+            font-size: 15px;
+            color: #FFFFFF;
+        }
+        .drama-card .card-content {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .drama-card.active .card-content {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+        .drama-card .detail-panel {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            overflow-y: auto;
+        }
+        .drama-card.active .detail-panel {
+            display: flex;
+            flex-direction: column;
+            animation: panelFadeIn 0.3s ease forwards;
+        }
+        @keyframes panelFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .detail-panel img {
+            width: 120px;
+            height: 160px;
+            border-radius: 8px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        .detail-panel .info-row {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .detail-panel .info-content {
+            flex: 1;
+            text-align: left;
+        }
+        .detail-panel .info-content h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .detail-panel .info-content .category {
+            margin-bottom: 10px;
+        }
+        .detail-panel .synopsis {
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        .detail-panel .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .detail-panel .close-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .page-header { text-align: center; margin-bottom: 30px; }
+        .drama-page h1 { overflow: hidden; display: inline-block; }
+        .drama-page h1 .title-inner { display: inline-block; }
+        .drama-category { opacity: 0; transform: translateY(40px); }
+        .drama-card { opacity: 0; transform: translateY(60px); }
+    </style>
+</head>
+<body>
+    <div class="drama-page">
+        <div class="page-header">
+            <h1 class="page-title"><span class="title-inner">🎬 美/英剧推荐</span></h1>
+        </div>
+        
+        <div class="drama-category fade-section">
+            <h2>经典神作</h2>
+            <div class="drama-list">
+                <div class="drama-card" data-synopsis="现代伦敦背景下的福尔摩斯探案故事，本尼迪克特·康伯巴奇主演，推理严密剧情紧凑，每季仅三集但质量极高，将经典侦探故事带入21世纪。">
+                    <div class="card-content">
+                        <img src="img/xtxlk.jpg">
+                        <h3>神探夏洛克</h3>
+                        <p class="category">英剧 | 推理悬疑</p>
+                    </div>
+                    <div class="detail-panel">
+                        <button class="close-btn">×</button>
+                        <div class="info-row">
+                            <img src="img/xtxlk.jpg">
+                            <div class="info-content">
+                                <h3>神探夏洛克</h3>
+                                <p class="category">英剧 | 推理悬疑</p>
+                            </div>
+                        </div>
+                        <p class="synopsis">现代伦敦背景下的福尔摩斯探案故事，本尼迪克特·康伯巴奇主演，推理严密剧情紧凑，每季仅三集但质量极高，将经典侦探故事带入21世纪。</p>
+                    </div>
+                </div>
+                <div class="drama-card" data-synopsis="高中化学老师沃尔特·怀特在得知自己患癌后，开始制造并贩卖冰毒，逐步走向黑暗深渊。剧情紧凑、角色塑造深刻，被誉为美剧史上最伟大的作品之一。">
+                    <div class="card-content">
+                        <img src="img/jmds.jpg">
+                        <h3>绝命毒师</h3>
+                        <p class="category">美剧 | 犯罪剧情</p>
+                    </div>
+                    <div class="detail-panel">
+                        <button class="close-btn">×</button>
+                        <div class="info-row">
+                            <img src="img/jmds.jpg">
+                            <div class="info-content">
+                                <h3>绝命毒师</h3>
+                                <p class="category">美剧 | 犯罪剧情</p>
+                            </div>
+                        </div>
+                        <p class="synopsis">高中化学老师沃尔特·怀特在得知自己患癌后，开始制造并贩卖冰毒，逐步走向黑暗深渊。剧情紧凑、角色塑造深刻，被誉为美剧史上最伟大的作品之一。</p>
+                    </div>
+                </div>
+                <div class="drama-card" data-synopsis="绝命毒师前传，讲述吉米·麦吉尔如何从一个小律师成长为\"索尔·古德曼\"的故事。剧情细腻、人物刻画入微，延续了绝命毒师的高品质。">
+                    <div class="card-content">
+                        <img src="img/wsls.jpg">
+                        <h3>风骚律师</h3>
+                        <p class="category">美剧 | 律政剧情</p>
+                    </div>
+                    <div class="detail-panel">
+                        <button class="close-btn">×</button>
+                        <div class="info-row">
+                            <img src="img/wsls.jpg">
+                            <div class="info-content">
+                                <h3>风骚律师</h3>
+                                <p class="category">美剧 | 律政剧情</p>
+                            </div>
+                        </div>
+                        <p class="synopsis">绝命毒师前传，讲述吉米·麦吉尔如何从一个小律师成长为"索尔·古德曼"的故事。剧情细腻、人物刻画入微，延续了绝命毒师的高品质。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="drama-category fade-section">
+            <h2>热门巨作</h2>
+            <div class="drama-list">
+                <div class="drama-card" data-synopsis="维斯特洛大陆上七大王国争夺铁王座的史诗故事，充满权谋、战争与奇幻元素。场面宏大、角色众多，是一部划时代的奇幻巨作。">
+                    <div class="card-content">
+                        <img src="img/qldyx.jpg">
+                        <h3>权力的游戏</h3>
+                        <p class="category">美剧 | 史诗奇幻</p>
+                    </div>
+                    <div class="detail-panel">
+                        <button class="close-btn">×</button>
+                        <div class="info-row">
+                            <img src="img/qldyx.jpg">
+                            <div class="info-content">
+                                <h3>权力的游戏</h3>
+                                <p class="category">美剧 | 史诗奇幻</p>
+                            </div>
+                        </div>
+                        <p class="synopsis">维斯特洛大陆上七大王国争夺铁王座的史诗故事，充满权谋、战争与奇幻元素。场面宏大、角色众多，是一部划时代的奇幻巨作。</p>
+                    </div>
+                </div>
+                <div class="drama-card" data-synopsis="80年代复古风格科幻悬疑剧，小镇上发生的超自然事件和孩子们的冒险故事。融合悬疑、科幻、恐怖元素，深受观众喜爱。">
+                    <div class="card-content">
+                        <img src="img/gqwy.jpg">
+                        <h3>怪奇物语</h3>
+                        <p class="category">美剧 | 科幻悬疑</p>
+                    </div>
+                    <div class="detail-panel">
+                        <button class="close-btn">×</button>
+                        <div class="info-row">
+                            <img src="img/gqwy.jpg">
+                            <div class="info-content">
+                                <h3>怪奇物语</h3>
+                                <p class="category">美剧 | 科幻悬疑</p>
+                            </div>
+                        </div>
+                        <p class="synopsis">80年代复古风格科幻悬疑剧，小镇上发生的超自然事件和孩子们的冒险故事。融合悬疑、科幻、恐怖元素，深受观众喜爱。</p>
+                    </div>
+                </div>
+                <div class="drama-card" data-synopsis="每集独立故事，探讨科技对人类社会和人际关系的负面影响，发人深省。风格暗黑、剧情反转不断，被称为\"科技时代的黑童话\"。">
+                    <div class="card-content">
+                        <img src="img/hj.jpg">
+                        <h3>黑镜</h3>
+                        <p class="category">英剧 | 科幻讽刺</p>
+                    </div>
+                    <div class="detail-panel">
+                        <button class="close-btn">×</button>
+                        <div class="info-row">
+                            <img src="img/hj.jpg">
+                            <div class="info-content">
+                                <h3>黑镜</h3>
+                                <p class="category">英剧 | 科幻讽刺</p>
+                            </div>
+                        </div>
+                        <p class="synopsis">每集独立故事，探讨科技对人类社会和人际关系的负面影响，发人深省。风格暗黑、剧情反转不断，被称为"科技时代的黑童话"。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="drama-category fade-section">
+            <h2>口碑佳作</h2>
+            <div class="drama-list">
+                <div class="drama-card" data-synopsis="以伪纪录片形式展现办公室日常，幽默搞笑，角色鲜明。通过日常琐事展现职场人际关系和人性，轻松治愈。">
+                    <div class="card-content">
+                        <img src="img/bgs.jpg">
+                        <h3>办公室</h3>
+                        <p class="category">美剧 | 职场喜剧</p>
+                    </div>
+                    <div class="detail-panel">
+                        <button class="close-btn">×</button>
+                        <div class="info-row">
+                            <img src="img/bgs.jpg">
+                            <div class="info-content">
+                                <h3>办公室</h3>
+                                <p class="category">美剧 | 职场喜剧</p>
+                            </div>
+                        </div>
+                        <p class="synopsis">以伪纪录片形式展现办公室日常，幽默搞笑，角色鲜明。通过日常琐事展现职场人际关系和人性，轻松治愈。</p>
+                    </div>
+                </div>
+                <div class="drama-card" data-synopsis="纽约六个好友的生活故事，经典情景喜剧，陪伴无数人的青春。剧情轻松幽默、友情真挚，是一部经久不衰的经典。">
+                    <div class="card-content">
+                        <img src="img/lyj.jpg">
+                        <h3>老友记</h3>
+                        <p class="category">美剧 | 经典喜剧</p>
+                    </div>
+                    <div class="detail-panel">
+                        <button class="close-btn">×</button>
+                        <div class="info-row">
+                            <img src="img/lyj.jpg">
+                            <div class="info-content">
+                                <h3>老友记</h3>
+                                <p class="category">美剧 | 经典喜剧</p>
+                            </div>
+                        </div>
+                        <p class="synopsis">纽约六个好友的生活故事，经典情景喜剧，陪伴无数人的青春。剧情轻松幽默、友情真挚，是一部经久不衰的经典。</p>
+                    </div>
+                </div>
+                <div class="drama-card" data-synopsis="丧尸末日世界中幸存者的求生故事，探讨人性在极端环境下的挣扎。场面震撼、剧情跌宕起伏，展现了末日生存的残酷与希望。">
+                    <div class="card-content">
+                        <img src="img/xszr.jpg">
+                        <h3>行尸走肉</h3>
+                        <p class="category">美剧 | 丧尸末日</p>
+                    </div>
+                    <div class="detail-panel">
+                        <button class="close-btn">×</button>
+                        <div class="info-row">
+                            <img src="img/xszr.jpg">
+                            <div class="info-content">
+                                <h3>行尸走肉</h3>
+                                <p class="category">美剧 | 丧尸末日</p>
+                            </div>
+                        </div>
+                        <p class="synopsis">丧尸末日世界中幸存者的求生故事，探讨人性在极端环境下的挣扎。场面震撼、剧情跌宕起伏，展现了末日生存的残酷与希望。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var isDetailMode = false;
+        
+        document.querySelectorAll('.drama-card').forEach(function(card) {
+            card.addEventListener('click', function(e) {
+                if (e.target.classList.contains('close-btn')) {
+                    e.stopPropagation();
+                    exitDetailMode();
+                    return;
+                }
+                
+                if (isDetailMode && !card.classList.contains('active')) {
+                    exitDetailMode();
+                    setTimeout(function() {
+                        enterDetailMode(card);
+                    }, 100);
+                } else if (!isDetailMode) {
+                    enterDetailMode(card);
+                } else {
+                    exitDetailMode();
+                }
+            });
+            
+            card.querySelector('.close-btn').addEventListener('click', function(e) {
+                e.stopPropagation();
+                exitDetailMode();
+            });
+        });
+        
+        document.querySelector('.drama-page').addEventListener('click', function(e) {
+            if (isDetailMode && !e.target.closest('.drama-card')) {
+                exitDetailMode();
+            }
+        });
+        
+        function enterDetailMode(card) {
+            isDetailMode = true;
+            card.classList.add('active');
+        }
+        
+        function exitDetailMode() {
+            document.querySelectorAll('.drama-card').forEach(function(card) {
+                card.classList.remove('active');
+            });
+            isDetailMode = false;
+        }
+        
+        function initDramaAnimations() {
+            if (typeof gsap === 'undefined') return;
+            gsap.registerPlugin(ScrollTrigger);
+            
+            const titleInner = document.querySelector('.page-title .title-inner');
+            const title = document.querySelector('.page-title');
+            const categories = document.querySelectorAll('.drama-category');
+            
+            const tl = gsap.timeline({ delay: 0.3 });
+            
+            if (titleInner && title) {
+                tl.from(titleInner, {
+                    yPercent: 120,
+                    duration: 1.2,
+                    ease: 'power4.out'
+                }, 0.2);
+                
+                tl.from(title, {
+                    scaleY: 0.7,
+                    duration: 1,
+                    ease: 'power3.out'
+                }, 0.1);
+            }
+            
+            categories.forEach((cat, index) => {
+                const cards = cat.querySelectorAll('.drama-card');
+                
+                gsap.to(cat, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: cat,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+                
+                if (cards.length) {
+                    gsap.to(cards, {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: 'power3.out',
+                        stagger: 0.1,
+                        scrollTrigger: {
+                            trigger: cat,
+                            start: 'top 80%',
+                            toggleActions: 'play none none reverse'
+                        }
+                    });
+                }
+            });
+            
+            document.querySelectorAll('.drama-card img').forEach(img => {
+                img.addEventListener('mouseenter', () => {
+                    gsap.to(img, { scale: 1.08, duration: 0.5, ease: 'power2.out' });
+                });
+                img.addEventListener('mouseleave', () => {
+                    gsap.to(img, { scale: 1, duration: 0.5, ease: 'power2.out' });
+                });
+            });
+        }
+        
+        window.addEventListener('load', initDramaAnimations);
+    </script>
+</body>
+</html>
