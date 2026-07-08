@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>VOCALOID专题</title>
+    <link rel="stylesheet" type="text/css" href="../../css/music.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        .vocaloid-page { padding: 20px; color: white; }
+        .vocaloid-page h1 { text-align: center; margin-bottom: 30px; color: #88DCDC; }
+        .vocaloid-intro { background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; margin-bottom: 30px; line-height: 1.8; }
+        .vocaloid-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .vocaloid-card { position: relative; background: rgba(255,255,255,0.08); padding: 20px; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .vocaloid-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.12); }
+        .vocaloid-card.active { grid-column: span 2; animation: cardExpand 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; box-shadow: 0 20px 60px rgba(0,0,0,0.4); z-index: 10; }
+        @keyframes cardExpand { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.02); opacity: 0.9; } 100% { transform: scale(1); opacity: 1; } }
+        .vocaloid-card img { width: 120px; height: 120px; border-radius: 50%; margin-bottom: 10px; object-fit: cover; }
+        .vocaloid-card h3 { margin-bottom: 5px; font-size: 18px; }
+        .vocaloid-card .card-content { transition: opacity 0.3s ease, transform 0.3s ease; }
+        .vocaloid-card.active .card-content { opacity: 0; transform: scale(0.9); pointer-events: none; }
+        .vocaloid-card .detail-panel { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 20px; box-sizing: border-box; background: rgba(0,0,0,0.7); border-radius: 10px; overflow-y: auto; }
+        .vocaloid-card.active .detail-panel { display: flex; flex-direction: column; animation: panelFadeIn 0.3s ease forwards; }
+        @keyframes panelFadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+        .detail-panel img { width: 100px; height: 100px; border-radius: 50%; margin-right: 20px; flex-shrink: 0; }
+        .detail-panel .info-row { display: flex; margin-bottom: 15px; }
+        .detail-panel .info-content { flex: 1; text-align: left; }
+        .detail-panel .info-content h3 { margin-top: 0; margin-bottom: 8px; font-size: 20px; }
+        .detail-panel .info-content .role { font-size: 13px; color: #aaa; margin-bottom: 8px; }
+        .detail-panel .info-content .color-info { font-size: 13px; margin-bottom: 8px; }
+        .detail-panel .synopsis { text-align: left; font-size: 13px; line-height: 1.6; color: #ddd; }
+        .detail-panel .close-btn { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border: none; border-radius: 50%; background: rgba(255,255,255,0.2); color: white; font-size: 18px; cursor: pointer; transition: background 0.2s; }
+        .detail-panel .close-btn:hover { background: rgba(255,255,255,0.3); }
+        .color-tag { display: inline-block; width: 16px; height: 16px; border-radius: 50%; margin-right: 5px; vertical-align: -2px; }
+        .page-header { text-align: center; margin-bottom: 30px; }
+        .vocaloid-page h1 { overflow: hidden; display: inline-block; }
+        .vocaloid-page h1 .title-inner { display: inline-block; }
+        .vocaloid-intro { opacity: 0; transform: translateY(40px); }
+        .vocaloid-card { opacity: 0; transform: translateY(60px); }
+    </style>
+</head>
+<body>
+    <div class="vocaloid-page">
+        <div class="page-header">
+            <h1 class="page-title"><span class="title-inner">🎵 VOCALOID专题</span></h1>
+        </div>
+        
+        <div class="vocaloid-intro intro-section">
+            <h2>关于VOCALOID</h2>
+            <p>VOCALOID是Yamaha开发的歌声合成技术以及基于此项技术的软件。通过输入歌词和旋律，VOCALOID可以合成出类似人类唱歌的声音。</p>
+            <p>VOCALOID软件拥有多个"歌声库"，每个歌声库都有独特的声音特点和形象设定，被称为"VOCALOID角色"。这些角色由不同的公司开发，拥有各自的粉丝群体。</p>
+        </div>
+        
+        <h2 class="section-title" style="color: #FFA500; margin-bottom: 20px; opacity: 0; transform: translateX(-30px);">主要VOCALOID角色</h2>
+        <div class="vocaloid-list">
+            <div class="vocaloid-card">
+                <div class="card-content">
+                    <img src="img/miku.png">
+                    <h3 style="color: #39c5bb;"><span class="color-tag" style="background: #39c5bb;"></span>初音未来</h3>
+                    <p>Hatsune Miku</p>
+                    <p style="color: #39c5bb; font-size: 13px;">代表色：苍绿色</p>
+                </div>
+                <div class="detail-panel">
+                    <button class="close-btn">×</button>
+                    <div class="info-row">
+                        <img src="img/miku.png">
+                        <div class="info-content">
+                            <h3 style="color: #39c5bb;">初音未来</h3>
+                            <p class="role">Hatsune Miku / はつね みく</p>
+                            <p class="color-info"><span class="color-tag" style="background: #39c5bb;"></span>代表色：苍绿色 (#39C5BB)</p>
+                        </div>
+                    </div>
+                    <div class="synopsis">
+                        <p>初音未来是Crypton Future Media开发的VOCALOID2歌声库，于2007年8月31日发售，是最著名的VOCALOID角色之一。</p>
+                        <p>她的形象由画师KEI设计，标志性的青绿色双马尾成为其象征。作为VOCALOID界的"虚拟歌姬"，她拥有无数的原创歌曲和二创作品。</p>
+                        <p>从《甩葱歌》的爆火开始，到后来的《世界第一的公主殿下》《千本樱》等名曲，初音未来已经成为了一个跨越次元的文化现象，甚至举办了自己的全息演唱会。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="vocaloid-card">
+                <div class="card-content">
+                    <img src="img/rinlen.png">
+                    <h3><span class="color-tag" style="background: #FFA500;"></span>镜音铃・连</h3>
+                    <p>Kagamine Rin / Len</p>
+                    <p style="font-size: 13px;"><span style="color: #FFA500;">铃</span> / <span style="color: #FFE211;">连</span></p>
+                </div>
+                <div class="detail-panel">
+                    <button class="close-btn">×</button>
+                    <div class="info-row">
+                        <img src="img/rinlen.png">
+                        <div class="info-content">
+                            <h3 style="color: #FFA500;">镜音铃・镜音连</h3>
+                            <p class="role">Kagamine Rin / Len / かがみね りん・れん</p>
+                            <p class="color-info"><span class="color-tag" style="background: #FFA500;"></span>铃：橙色 (#FFA500) &nbsp; <span class="color-tag" style="background: #FFE211;"></span>连：黄色 (#FFE211)</p>
+                        </div>
+                    </div>
+                    <div class="synopsis">
+                        <p>镜音铃和镜音连是Crypton Future Media开发的VOCALOID2歌声库，于2007年12月27日发售，是继初音未来之后的第二弹VOCALOID角色。</p>
+                        <p>官方设定为"镜子里映射出的另一个自己"，铃是姐姐，连是弟弟。两人拥有各自独立的歌声库，也可以进行合唱。</p>
+                        <p>代表曲目有《右肩の蝶》《炉心融解》《悪ノ娘》《悪ノ召使》等。他们的Append版本和V4X版本进一步提升了歌声表现力。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="vocaloid-card">
+                <div class="card-content">
+                    <img src="img/teto.png">
+                    <h3 style="color: #B84A6B;"><span class="color-tag" style="background: #B84A6B;"></span>重音Teto</h3>
+                    <p>Kasane Teto</p>
+                    <p style="color: #B84A6B; font-size: 13px;">代表色：酒红色</p>
+                </div>
+                <div class="detail-panel">
+                    <button class="close-btn">×</button>
+                    <div class="info-row">
+                        <img src="img/teto.png">
+                        <div class="info-content">
+                            <h3 style="color: #B84A6B;">重音Teto</h3>
+                            <p class="role">Kasane Teto / かさね てと</p>
+                            <p class="color-info"><span class="color-tag" style="background: #B84A6B;"></span>代表色：酒红色 (#B84A6B)</p>
+                        </div>
+                    </div>
+                    <div class="synopsis">
+                        <p>重音Teto最初是2008年4月1日愚人节企划"伪VOCALOID"中诞生的角色，由2ちゃんねる的网友们共同创作。</p>
+                        <p>虽然最初只是玩笑，但因其独特的性格设定和可爱的外形获得了极高人气，后来通过UTAU歌声合成引擎正式拥有了自己的声音库。</p>
+                        <p>官方设定是"拥有双马尾的傲娇少女"，喜欢法棍面包，性格有些傲娇但很可爱。代表曲目有《おちゃめ機能》《テオ》等。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="vocaloid-card">
+                <div class="card-content">
+                    <img src="img/gax.png">
+                    <h3 style="color: #E63946;"><span class="color-tag" style="background: #E63946;"></span>歌爱雪</h3>
+                    <p>Kaai Yuki</p>
+                    <p style="color: #E63946; font-size: 13px;">代表色：红色</p>
+                </div>
+                <div class="detail-panel">
+                    <button class="close-btn">×</button>
+                    <div class="info-row">
+                        <img src="img/gax.png">
+                        <div class="info-content">
+                            <h3 style="color: #E63946;">歌爱雪</h3>
+                            <p class="role">Kaai Yuki / かあい ゆき</p>
+                            <p class="color-info"><span class="color-tag" style="background: #E63946;"></span>代表色：红色 (#E63946)</p>
+                        </div>
+                    </div>
+                    <div class="synopsis">
+                        <p>歌爱雪是AH-Software开发的VOCALOID2歌声库，于2009年12月4日发售，以小学生少女的声音为特征。</p>
+                        <p>她的声音录制自真实的小学生声优，因此拥有非常真实可爱的童声。形象由画师梅谷阿久津设计，背着书包的小学生造型非常有特色。</p>
+                        <p>代表曲目有《ハロー・ライフ》《sing a song》等。她的V4版本新增了Natural和Sweet两种声线，进一步拓展了表现范围。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var isDetailMode = false;
+        document.querySelectorAll('.vocaloid-card').forEach(function(card) {
+            card.addEventListener('click', function(e) {
+                if (e.target.classList.contains('close-btn')) { e.stopPropagation(); exitDetailMode(); return; }
+                if (isDetailMode && !card.classList.contains('active')) {
+                    exitDetailMode(); setTimeout(function() { enterDetailMode(card); }, 100);
+                } else if (!isDetailMode) { enterDetailMode(card); } else { exitDetailMode(); }
+            });
+            card.querySelector('.close-btn').addEventListener('click', function(e) { e.stopPropagation(); exitDetailMode(); });
+        });
+        document.querySelector('.vocaloid-page').addEventListener('click', function(e) {
+            if (isDetailMode && !e.target.closest('.vocaloid-card')) { exitDetailMode(); }
+        });
+        function enterDetailMode(card) { isDetailMode = true; card.classList.add('active'); }
+        function exitDetailMode() { document.querySelectorAll('.vocaloid-card').forEach(function(card) { card.classList.remove('active'); }); isDetailMode = false; }
+        
+        function initVocaloidAnimations() {
+            if (typeof gsap === 'undefined') return;
+            gsap.registerPlugin(ScrollTrigger);
+            
+            const titleInner = document.querySelector('.page-title .title-inner');
+            const title = document.querySelector('.page-title');
+            const intro = document.querySelector('.vocaloid-intro');
+            const sectionTitle = document.querySelector('.section-title');
+            const cards = document.querySelectorAll('.vocaloid-card');
+            
+            const tl = gsap.timeline({ delay: 0.3 });
+            
+            if (titleInner && title) {
+                tl.from(titleInner, {
+                    yPercent: 120,
+                    duration: 1.2,
+                    ease: 'power4.out'
+                }, 0.2);
+                
+                tl.from(title, {
+                    scaleY: 0.7,
+                    duration: 1,
+                    ease: 'power3.out'
+                }, 0.1);
+            }
+            
+            if (intro) {
+                tl.to(intro, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out'
+                }, 0.8);
+            }
+            
+            if (sectionTitle) {
+                gsap.to(sectionTitle, {
+                    x: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: sectionTitle,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            }
+            
+            if (cards.length) {
+                gsap.to(cards, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    stagger: 0.12,
+                    scrollTrigger: {
+                        trigger: '.vocaloid-list',
+                        start: 'top 80%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            }
+            
+            document.querySelectorAll('.vocaloid-card img').forEach(img => {
+                img.addEventListener('mouseenter', () => {
+                    gsap.to(img, { scale: 1.1, duration: 0.5, ease: 'power2.out' });
+                });
+                img.addEventListener('mouseleave', () => {
+                    gsap.to(img, { scale: 1, duration: 0.5, ease: 'power2.out' });
+                });
+            });
+        }
+        
+        window.addEventListener('load', initVocaloidAnimations);
+    </script>
+</body>
+</html>

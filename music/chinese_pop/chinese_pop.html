@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>华语乐坛专题</title>
+    <link rel="stylesheet" type="text/css" href="../../css/music.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        .pop-page {
+            padding: 20px;
+            color: white;
+        }
+        .pop-page h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #88DCDC;
+        }
+        .pop-intro {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        .singer-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .singer-card {
+            background: rgba(255,255,255,0.08);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .singer-card:hover {
+            transform: scale(1.03);
+        }
+        .singer-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 3px solid rgba(136, 220, 220, 0.5);
+            display: block;
+        }
+        .singer-card h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #88DCDC;
+        }
+        .singer-card .singer-info {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        .singer-card p {
+            line-height: 1.6;
+            font-size: 14px;
+            color: #ccc;
+            text-align: left;
+        }
+        .color-tag {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .page-header { text-align: center; margin-bottom: 30px; }
+        .pop-page h1 { overflow: hidden; display: inline-block; }
+        .pop-page h1 .title-inner { display: inline-block; }
+        .pop-intro { opacity: 0; transform: translateY(40px); }
+        .singer-card { opacity: 0; transform: translateY(60px); }
+    </style>
+</head>
+<body>
+    <div class="pop-page">
+        <div class="page-header">
+            <h1 class="page-title"><span class="title-inner">🎵 华语乐坛专题</span></h1>
+        </div>
+        
+        <div class="pop-intro intro-section">
+            <h2>华语乐坛的璀璨之星</h2>
+            <p>华语乐坛历经数十年发展，涌现出无数优秀的歌手和音乐人。他们用独特的音乐风格和深刻的歌词，影响了一代又一代听众。</p>
+            <p>这里分享三位我比较喜欢的歌手：许嵩、周杰伦、林俊杰，他们各自以独特的音乐风格和创作才华，在华语流行音乐中留下了深刻的印记。</p>
+        </div>
+        
+        <h2 class="section-title" style="color: #FFA500; margin-bottom: 20px; opacity: 0; transform: translateX(-30px);">我比较喜欢的三位歌手</h2>
+        <div class="singer-list">
+            <div class="singer-card">
+                <img src="img/xs.png" class="singer-avatar">
+                <h3><span class="color-tag" style="background: #88DCDC;"></span>许嵩</h3>
+                <div class="singer-info">英文名：Vae | 1986年出生于安徽合肥</div>
+                <p>许嵩是中国大陆著名的创作歌手、音乐制作人。他以独特的中国风歌曲和细腻的歌词著称，擅长词曲创作和编曲制作。代表作有《素颜》《玫瑰花的葬礼》《庐州月》等。许嵩的音乐风格清新淡雅，歌词富有诗意，深受年轻听众喜爱。</p>
+            </div>
+            <div class="singer-card">
+                <img src="img/zjl.png" class="singer-avatar">
+                <h3><span class="color-tag" style="background: #FFA500;"></span>周杰伦</h3>
+                <div class="singer-info">英文名：Jay Chou | 1979年出生于台湾新北</div>
+                <p>周杰伦是华语乐坛公认的"天王级"歌手、词曲创作人和演员。他开创了中国风与R&B、嘻哈等元素融合的音乐风格，被誉为"亚洲流行音乐之王"。代表作有《青花瓷》《七里香》《稻香》等。周杰伦的音乐影响力遍及整个华语圈，是许多人的青春记忆。</p>
+            </div>
+            <div class="singer-card">
+                <img src="img/jj.png" class="singer-avatar">
+                <h3><span class="color-tag" style="background: #FAAFBE;"></span>林俊杰</h3>
+                <div class="singer-info">英文名：JJ Lin | 1981年出生于新加坡</div>
+                <p>林俊杰是新加坡著名的创作歌手、音乐制作人。他以出色的唱功和创作能力闻名，歌曲风格多样，从抒情到摇滚都有涉猎。代表作有《江南》《曹操》《修炼爱情》等。林俊杰的歌声温柔细腻，音乐作品兼具流行与艺术价值，在华语乐坛拥有极高的人气。</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+            if (typeof gsap === 'undefined') return;
+            gsap.registerPlugin(ScrollTrigger);
+            
+            const titleInner = document.querySelector('.page-title .title-inner');
+            const title = document.querySelector('.page-title');
+            const intro = document.querySelector('.pop-intro');
+            const sectionTitle = document.querySelector('.section-title');
+            const cards = document.querySelectorAll('.singer-card');
+            
+            const tl = gsap.timeline({ delay: 0.3 });
+            
+            if (titleInner && title) {
+                tl.from(titleInner, {
+                    yPercent: 120,
+                    duration: 1.2,
+                    ease: 'power4.out'
+                }, 0.2);
+                
+                tl.from(title, {
+                    scaleY: 0.7,
+                    duration: 1,
+                    ease: 'power3.out'
+                }, 0.1);
+            }
+            
+            if (intro) {
+                gsap.to(intro, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: intro,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            }
+            
+            if (sectionTitle) {
+                gsap.to(sectionTitle, {
+                    x: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: sectionTitle,
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            }
+            
+            if (cards.length) {
+                gsap.to(cards, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    stagger: 0.15,
+                    scrollTrigger: {
+                        trigger: '.singer-list',
+                        start: 'top 80%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            }
+            
+            document.querySelectorAll('.singer-avatar').forEach(img => {
+                img.addEventListener('mouseenter', () => {
+                    gsap.to(img, { scale: 1.1, duration: 0.5, ease: 'power2.out' });
+                });
+                img.addEventListener('mouseleave', () => {
+                    gsap.to(img, { scale: 1, duration: 0.5, ease: 'power2.out' });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

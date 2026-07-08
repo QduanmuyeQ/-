@@ -1,0 +1,616 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>端木记事本 - 音乐与文化分享</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+	</head>
+	<body>
+		<div class="loader-wrapper" id="loaderWrapper">
+			<div class="loader-bg"></div>
+			<canvas class="loader-particles" id="loaderParticles"></canvas>
+			<div class="loader-content">
+				<div class="loader-title" id="loaderTitle">正在进入端木叶的世界</div>
+				<div class="loader-bar">
+					<div class="loader-bar-inner" id="loaderBarInner"></div>
+				</div>
+				<div class="loader-percent" id="loaderPercent">0%</div>
+			</div>
+		</div>
+		<div class="bg-container" id="bgContainer">
+			<div class="bg-image"></div>
+		</div>
+		<div class="leaves-container" id="leavesContainer"></div>
+		<div class="top">
+			<div id="Logo">
+				<img src="img/TouXiang1.jpg" id="topimg"><span>端木记事本</span>
+			</div>
+				<ul>
+					<div class="dropdown">
+						<li><a href="#" onclick="return showHome()" class="nav-link">首页</a><img src="img/xiala.png" class="xiala"></li>
+						<div class="dropdown-list">
+							<ul>
+								<li><a href="#" onclick="return showSearch()">起始页</a></li>
+								<li><a href="home/welcome/welcome.html" onclick="return showIframe(this.href)">欢迎页</a></li>
+								<li><a href="home/myself/myself.html" onclick="return showIframe(this.href)">Myself</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="dropdown">
+						<li><a href="music/content/content.html" onclick="return showIframe(this.href)" class="nav-link">🎵 音乐馆</a><img src="img/xiala.png" class="xiala"></li>
+						<div class="dropdown-list">
+							<ul>
+								<li><a href="music/player/player.html" onclick="return showIframe(this.href)">音乐播放器</a></li>
+								<li><a href="music/vocaloid/vocaloid.html" onclick="return showIframe(this.href)">VOCALOID专题</a></li>
+								<li><a href="music/chinese_pop/chinese_pop.html" onclick="return showIframe(this.href)">华语乐坛专题</a></li>
+								<li><a href="music/content/content.html" onclick="return showIframe(this.href)">歌曲列表（2023）</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="dropdown">
+						<li><a href="home/blog/blog.html" onclick="return showIframe(this.href)" class="nav-link">📝 随笔集</a><img src="img/xiala.png" class="xiala"></li>
+						<div class="dropdown-list">
+							<ul>
+								<li><a href="home/blog/blog.html" onclick="return showIframe(this.href)">我的博客</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="dropdown">
+						<li><a href="interest/game/game.html" onclick="return showIframe(this.href)" class="nav-link">🎮 兴趣圈</a><img src="img/xiala.png" class="xiala"></li>
+						<div class="dropdown-list">
+							<ul>
+								<li><a href="interest/game/game.html" onclick="return showIframe(this.href)">游戏分享</a></li>
+								<li><a href="interest/anime/anime.html" onclick="return showIframe(this.href)">动漫推荐</a></li>
+								<li><a href="interest/drama/drama.html" onclick="return showIframe(this.href)">美/英剧</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="dropdown">
+						<li><a href="interact/comment/comment.html" onclick="return showIframe(this.href)" class="nav-link">💬 互动区</a><img src="img/xiala.png" class="xiala"></li>
+						<div class="dropdown-list">
+							<ul>
+								<li><a href="interact/comment/comment.html" onclick="return showIframe(this.href)">最新评论</a></li>
+								<li><a href="interact/games/games.html" onclick="return showIframe(this.href)">小游戏</a></li>
+								<li><a href="interact/feedback/feedback.html" onclick="return showIframe(this.href)">意见反馈</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="dropdown">
+						<li><a href="about/about/about.html" onclick="return showIframe(this.href)" class="nav-link">👤 关于我</a><img src="img/xiala.png" class="xiala"></li>
+						<div class="dropdown-list">
+							<ul>
+								<li><a href="about/about/about.html" onclick="return showIframe(this.href)">作者简介</a></li>
+								<li><a href="about/contact/contact.html" onclick="return showIframe(this.href)">联系方式</a></li>
+								<li><a href="about/history/history.html" onclick="return showIframe(this.href)">网站历史</a></li>
+							</ul>
+						</div>
+					</div>
+				</ul>
+		</div>
+		<div class="notice-bar" id="noticeBar">
+			<marquee behavior="scroll" direction="left" scrollamount="5">
+				<span class="notice-title">📢 公告：</span>
+				欢迎来到端木记事本！这里分享音乐、动漫、游戏、美英剧等精彩内容。
+				最新更新：游戏分享视频卡片可点击播放 | 美/英剧&动漫推荐剧情介绍 | 华语乐坛专题上线 | VOCALOID角色介绍 | 互动区评论功能已开放 | 感谢各位站友的支持！
+			</marquee>
+		</div>
+		<div id="search-content" class="search-content">
+			<div class="greeting" id="greeting"></div>
+			<div class="time-display" id="timeDisplay"></div>
+			<div class="date-info">
+				<div class="lunar-date" id="lunarDate"></div>
+				<div class="solar-date" id="solarDate"></div>
+			</div>
+			<div id="SskOut">
+				<form action="https://www.bing.com/search" method="get" target="_blank" id="searchF">
+					<div class="search-engine-btn" id="searchEngineBtn" onclick="toggleSearchEngine(event)">
+						<img src="img/bing.png" alt="Bing">
+					</div>
+					<input type="text" name="q" placeholder="今天你想搜什么捏~(￣▽￣)~？" id="searchSK"/>
+					<input type="submit" value="" id="searchB"/>
+					<div class="search-engine-list" id="searchEngineList">
+						<div class="engine-grid">
+							<div class="engine-item selected" onclick="selectEngine('bing')">
+								<span class="engine-icon"><img src="img/bing.png" alt="Bing"></span>
+								<span class="engine-name">必应<span class="engine-name en">Bing</span></span>
+							</div>
+							<div class="engine-item" onclick="selectEngine('baidu')">
+								<span class="engine-icon"><img src="img/baidu.png" alt="Baidu"></span>
+								<span class="engine-name">百度<span class="engine-name en">Baidu</span></span>
+							</div>
+							<div class="engine-item" onclick="selectEngine('bilibili')">
+								<span class="engine-icon"><img src="img/bilibili.png" alt="Bilibili"></span>
+								<span class="engine-name">哔哩哔哩<span class="engine-name en">Bilibili</span></span>
+							</div>
+							<div class="engine-item" onclick="selectEngine('github')">
+								<span class="engine-icon"><img src="img/github.png" alt="GitHub"></span>
+								<span class="engine-name">GitHub</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div id="iframe-content" class="iframe-content">
+			<div class="frame">
+				<iframe frameborder="0" name="First" width="100%" height="800px" src="about/about/about.html" scrolling="auto" allowtransparency="true"></iframe>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="friend-links">
+				<h3>友情链接</h3>
+				<ul>
+					<li><a href="https://www.bilibili.com" target="_blank">哔哩哔哩</a></li>
+					<li><a href="https://www.nicovideo.jp" target="_blank">Niconico</a></li>
+					<li><a href="https://zh.moegirl.org.cn" target="_blank">萌娘百科</a></li>
+					<li><a href="https://vocaloid.fandom.com" target="_blank">Vocaloid Wiki</a></li>
+				</ul>
+			</div>
+			<div class="contact">
+				<h3>联系方式</h3>
+				<p><span class="label">作者：</span>张炫羽</p>
+				<p><span class="label">邮箱：</span>207XXX1XX0@qq.com</p>
+				<p><span class="label qq-label">QQ：</span>207XXX1XX0</p>
+			</div>
+			<div class="copyright">
+				<p>© 2026 端木记事本 版权所有</p>
+				<p>ICP备案号：粤ICP备XXXXXXXX号</p>
+				<p>免责声明：本站素材仅供个人学习使用，非商业用途。部分素材来源于网络，如有侵权请联系删除。</p>
+			</div>
+		</div>
+		<script>
+			function init() {
+				updateTime();
+				setInterval(updateTime, 1000);
+				
+				var searchSK = document.getElementById('searchSK');
+				var bgContainer = document.getElementById('bgContainer');
+				var searchF = document.getElementById('searchF');
+				
+				if (searchSK) {
+					var blurTimer = null;
+					var searchContent = document.getElementById('search-content');
+					var dateInfo = document.querySelector('.date-info');
+					
+					searchSK.addEventListener('focus', function() {
+						if (blurTimer) clearTimeout(blurTimer);
+						bgContainer.classList.add('active');
+						searchF.classList.add('focused');
+						if (dateInfo) dateInfo.classList.add('hidden');
+					});
+					
+					searchSK.addEventListener('blur', function() {
+						blurTimer = setTimeout(function() {
+							bgContainer.classList.remove('active');
+							searchF.classList.remove('focused');
+							if (dateInfo) dateInfo.classList.remove('hidden');
+						}, 200);
+					});
+				}
+				
+				showHome();
+			}
+			
+			function updateTime() {
+				var now = new Date();
+				var hours = String(now.getHours()).padStart(2, '0');
+				var minutes = String(now.getMinutes()).padStart(2, '0');
+				var seconds = String(now.getSeconds()).padStart(2, '0');
+				document.getElementById('timeDisplay').textContent = hours + ':' + minutes + ':' + seconds;
+				
+				updateGreeting(now.getHours());
+				updateDateInfo(now);
+			}
+			
+			function updateGreeting(hour) {
+				var greetingText = '';
+				if (hour >= 0 && hour < 5) {
+					greetingText = '凌晨好！欢迎光临本站';
+				} else if (hour >= 5 && hour < 8) {
+					greetingText = '早上好！欢迎光临本站';
+				} else if (hour >= 8 && hour < 11) {
+					greetingText = '上午好！欢迎光临本站';
+				} else if (hour >= 11 && hour < 13) {
+					greetingText = '中午好！欢迎光临本站';
+				} else if (hour >= 13 && hour < 18) {
+					greetingText = '下午好！欢迎光临本站';
+				} else if (hour >= 18 && hour < 22) {
+					greetingText = '晚上好！欢迎光临本站';
+				} else {
+					greetingText = '夜深了！注意休息';
+				}
+				var greetingEl = document.getElementById('greeting');
+				if (greetingEl) {
+					greetingEl.textContent = greetingText;
+				}
+			}
+			
+			function updateDateInfo(date) {
+				var lunar = getLunarDate(date);
+				var weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+				
+				var lunarEl = document.getElementById('lunarDate');
+				if (lunarEl) {
+					lunarEl.textContent = lunar;
+				}
+				
+				var solarEl = document.getElementById('solarDate');
+				if (solarEl) {
+					var year = date.getFullYear();
+					var month = date.getMonth() + 1;
+					var day = date.getDate();
+					var weekDay = weekDays[date.getDay()];
+					solarEl.textContent = year + '年' + month + '月' + day + '日 ' + weekDay;
+				}
+			}
+			
+			function getLunarDate(date) {
+				var lunarYear = ['甲子', '乙丑', '丙寅', '丁卯', '戊辰', '己巳', '庚午', '辛未', '壬申', '癸酉', '甲戌', '乙亥', '丙子', '丁丑', '戊寅', '己卯', '庚辰', '辛巳', '壬午', '癸未', '甲申', '乙酉', '丙戌', '丁亥', '戊子', '己丑', '庚寅', '辛卯', '壬辰', '癸巳', '甲午', '乙未', '丙申', '丁酉', '戊戌', '己亥', '庚子', '辛丑', '壬寅', '癸卯', '甲辰', '乙巳', '丙午', '丁未', '戊申', '己酉', '庚戌', '辛亥', '壬子', '癸丑', '甲寅', '乙卯', '丙辰', '丁巳', '戊午', '己未', '庚申', '辛酉', '壬戌', '癸亥'];
+				var lunarMonth = ['正月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '冬月', '腊月'];
+				var lunarDay = ['初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十', '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十', '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十'];
+				
+				var year = date.getFullYear();
+				var month = date.getMonth();
+				var day = date.getDate();
+				
+				var yearIndex = (year - 1984) % 60;
+				var yearStr = lunarYear[yearIndex];
+				var monthStr = lunarMonth[month];
+				var dayStr = lunarDay[day - 1];
+				
+				return yearStr + '年 ' + monthStr + dayStr;
+			}
+			
+			var currentEngine = 'bing';
+			var engines = {
+				'bing': { name: 'B', icon: 'img/bing.png', url: 'https://www.bing.com/search', param: 'q' },
+				'baidu': { name: '百', icon: 'img/baidu.png', url: 'https://www.baidu.com/s', param: 'wd' },
+				'bilibili': { name: 'B', icon: 'img/bilibili.png', url: 'https://search.bilibili.com/all', param: 'keyword' },
+				'github': { name: 'G', icon: 'img/github.png', url: 'https://github.com/search', param: 'q' }
+			};
+			
+			function toggleSearchEngine(event) {
+				if (event) event.stopPropagation();
+				var list = document.getElementById('searchEngineList');
+				list.classList.toggle('show');
+				var searchSK = document.getElementById('searchSK');
+				if (searchSK) searchSK.focus();
+				return false;
+			}
+			
+			function selectEngine(engine) {
+				currentEngine = engine;
+				var engineData = engines[engine];
+				var btn = document.getElementById('searchEngineBtn');
+				var form = document.getElementById('searchF');
+				var list = document.getElementById('searchEngineList');
+				
+				var btnImg = btn.querySelector('img');
+				if (btnImg) {
+					btnImg.src = engineData.icon;
+				}
+				form.action = engineData.url;
+				var input = form.querySelector('input[name]');
+				if (input) {
+					input.name = engineData.param;
+				}
+				
+				var items = list.querySelectorAll('.engine-item');
+				items.forEach(function(item) {
+					item.classList.remove('selected');
+				});
+				event.target.closest('.engine-item').classList.add('selected');
+				
+				list.classList.remove('show');
+				var searchSK = document.getElementById('searchSK');
+				if (searchSK) searchSK.focus();
+			}
+			
+			document.addEventListener('click', function(e) {
+				var list = document.getElementById('searchEngineList');
+				var btn = document.getElementById('searchEngineBtn');
+				if (list && btn && !list.contains(e.target) && !btn.contains(e.target)) {
+					list.classList.remove('show');
+				}
+			});
+			
+			function showHome() {
+				document.getElementById('search-content').style.display = 'none';
+				document.getElementById('iframe-content').style.display = 'block';
+				document.querySelector('.footer').style.display = 'flex';
+				document.getElementById('noticeBar').classList.add('show');
+				var iframe = document.querySelector('iframe');
+				iframe.src = 'home/welcome/welcome.html';
+				window.scrollTo(0, 0);
+				iframe.onload = function() {
+					try {
+						iframe.contentWindow.scrollTo(0, 0);
+						iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
+						
+						if (window.welcomeAnimReady && iframe.contentWindow.startWelcomeAnimations) {
+							iframe.contentWindow.startWelcomeAnimations();
+						}
+					} catch(e) {}
+				};
+			}
+			
+			function showSearch() {
+				document.getElementById('search-content').style.display = 'flex';
+				document.getElementById('iframe-content').style.display = 'none';
+				document.querySelector('.footer').style.display = 'flex';
+				document.getElementById('noticeBar').classList.remove('show');
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+				
+				var bgContainer = document.getElementById('bgContainer');
+				bgContainer.classList.add('loading');
+				setTimeout(function() {
+					bgContainer.classList.remove('loading');
+				}, 2000);
+				
+				var greetingEl = document.getElementById('greeting');
+				if (greetingEl) {
+					greetingEl.style.animation = 'none';
+					greetingEl.offsetHeight;
+					greetingEl.style.animation = '';
+				}
+				
+				return false;
+			}
+			
+			function showIframe(url) {
+				document.getElementById('search-content').style.display = 'none';
+				document.getElementById('iframe-content').style.display = 'block';
+				document.querySelector('.footer').style.display = 'flex';
+				document.getElementById('noticeBar').classList.remove('show');
+				var iframe = document.querySelector('iframe');
+				iframe.src = url;
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+				iframe.onload = function() {
+					iframe.contentWindow.scrollTo(0, 0);
+				};
+				return false;
+			}
+			
+			function createLeaves() {
+				var container = document.getElementById('leavesContainer');
+				var leafCount = 18;
+				
+				for (var i = 0; i < leafCount; i++) {
+					var leaf = document.createElement('div');
+					leaf.className = 'leaf';
+					
+					var size = Math.random() * 50 + 15;
+					leaf.style.width = size + 'px';
+					leaf.style.height = size + 'px';
+					
+					leaf.style.left = Math.random() * 100 + '%';
+					leaf.style.top = -100 + 'px';
+					
+					var duration = Math.random() * 12 + 10;
+					var delay = Math.random() * 20;
+					
+					leaf.style.animation = 'fall ' + duration + 's ease-in-out ' + delay + 's infinite';
+					
+					container.appendChild(leaf);
+				}
+			}
+			
+			createLeaves();
+			
+			var loaderProgress = 0;
+			var loaderInterval = null;
+			var particles = [];
+			var canvas = null;
+			var ctx = null;
+			var animationId = null;
+			
+			function initParticles() {
+				canvas = document.getElementById('loaderParticles');
+				if (!canvas) return;
+				ctx = canvas.getContext('2d');
+				resizeCanvas();
+				window.addEventListener('resize', resizeCanvas);
+				
+				for (var i = 0; i < 120; i++) {
+					particles.push({
+						x: Math.random() * canvas.width,
+						y: Math.random() * canvas.height,
+						r: Math.random() * 2 + 0.5,
+						vx: (Math.random() - 0.5) * 0.5,
+						vy: (Math.random() - 0.5) * 0.5,
+						alpha: Math.random() * 0.5 + 0.3,
+						twinkleSpeed: Math.random() * 0.02 + 0.01,
+						twinkleDir: Math.random() > 0.5 ? 1 : -1
+					});
+				}
+				
+				animateParticles();
+			}
+			
+			function resizeCanvas() {
+				if (canvas) {
+					canvas.width = window.innerWidth;
+					canvas.height = window.innerHeight;
+				}
+			}
+			
+			function animateParticles() {
+				if (!ctx || !canvas) return;
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				
+				for (var i = 0; i < particles.length; i++) {
+					var p = particles[i];
+					
+					p.alpha += p.twinkleSpeed * p.twinkleDir;
+					if (p.alpha >= 1) {
+						p.alpha = 1;
+						p.twinkleDir = -1;
+					} else if (p.alpha <= 0.2) {
+						p.alpha = 0.2;
+						p.twinkleDir = 1;
+					}
+					
+					p.x += p.vx;
+					p.y += p.vy;
+					
+					if (p.x < 0) p.x = canvas.width;
+					if (p.x > canvas.width) p.x = 0;
+					if (p.y < 0) p.y = canvas.height;
+					if (p.y > canvas.height) p.y = 0;
+					
+					ctx.beginPath();
+					ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+					ctx.fillStyle = 'rgba(136, 220, 220, ' + p.alpha + ')';
+					ctx.fill();
+					
+					if (Math.random() < 0.002) {
+						var lineLength = Math.random() * 80 + 40;
+						var angle = Math.PI / 4 + (Math.random() - 0.5) * 0.5;
+						var endX = p.x + Math.cos(angle) * lineLength;
+						var endY = p.y + Math.sin(angle) * lineLength;
+						
+						var gradient = ctx.createLinearGradient(p.x, p.y, endX, endY);
+						gradient.addColorStop(0, 'rgba(255, 255, 255, ' + p.alpha + ')');
+						gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+						
+						ctx.beginPath();
+						ctx.moveTo(p.x, p.y);
+						ctx.lineTo(endX, endY);
+						ctx.strokeStyle = gradient;
+						ctx.lineWidth = 1;
+						ctx.stroke();
+					}
+				}
+				
+				animationId = requestAnimationFrame(animateParticles);
+			}
+			
+			function startLoader() {
+				document.body.classList.add('loading');
+				initParticles();
+				
+				loaderInterval = setInterval(function() {
+					var increment = Math.random() * 8 + 2;
+					loaderProgress = Math.min(loaderProgress + increment, 95);
+					updateLoader();
+				}, 200);
+				
+				setTimeout(function() {
+					loaderProgress = 100;
+					updateLoader();
+					clearInterval(loaderInterval);
+					
+					setTimeout(function() {
+						hideLoader();
+					}, 500);
+				}, 2800);
+			}
+			
+			function updateLoader() {
+				var bar = document.getElementById('loaderBarInner');
+				var percent = document.getElementById('loaderPercent');
+				if (bar) bar.style.width = loaderProgress + '%';
+				if (percent) percent.textContent = Math.floor(loaderProgress) + '%';
+			}
+			
+			function hideLoader() {
+				var wrapper = document.getElementById('loaderWrapper');
+				if (wrapper) {
+					wrapper.classList.add('hide');
+					document.body.classList.remove('loading');
+					
+					if (animationId) {
+						cancelAnimationFrame(animationId);
+					}
+					
+					setTimeout(function() {
+						if (wrapper && wrapper.parentNode) {
+							wrapper.parentNode.removeChild(wrapper);
+						}
+						
+						window.welcomeAnimReady = true;
+						
+						var iframe = document.querySelector('iframe');
+						if (iframe && iframe.contentWindow && iframe.contentWindow.startWelcomeAnimations) {
+							iframe.contentWindow.startWelcomeAnimations();
+						}
+					}, 1000);
+				}
+			}
+			
+			startLoader();
+			window.onload = init;
+			
+			function initMainAnimations() {
+				if (typeof gsap === 'undefined') return;
+				gsap.registerPlugin(ScrollTrigger);
+				
+				const nav = document.querySelector('.top');
+				const logo = document.querySelector('#Logo');
+				const navItems = document.querySelectorAll('.top .dropdown');
+				const noticeBar = document.querySelector('.notice-bar');
+				const footer = document.querySelector('.footer');
+				
+				const tl = gsap.timeline({ delay: 0.2 });
+				
+				if (nav) {
+					tl.from(nav, {
+						y: -120,
+						opacity: 0,
+						duration: 1.2,
+						ease: 'power4.out'
+					}, 0.3);
+				}
+				
+				if (logo) {
+					tl.from(logo, {
+						x: -60,
+						opacity: 0,
+						rotation: -10,
+						duration: 1,
+						ease: 'power3.out'
+					}, 0.6);
+				}
+				
+				if (navItems.length) {
+					tl.from(navItems, {
+						y: -30,
+						opacity: 0,
+						duration: 0.7,
+						ease: 'power3.out',
+						stagger: 0.1
+					}, 0.7);
+				}
+				
+				if (noticeBar && noticeBar.classList.contains('show')) {
+					tl.from(noticeBar, {
+						y: -20,
+						opacity: 0,
+						duration: 0.6,
+						ease: 'power3.out'
+					}, 1);
+				}
+				
+				if (footer) {
+					const footerSections = footer.children;
+					gsap.from(footerSections, {
+						y: 50,
+						opacity: 0,
+						duration: 1,
+						ease: 'power3.out',
+						stagger: 0.15,
+						scrollTrigger: {
+							trigger: footer,
+							start: 'top 92%',
+							toggleActions: 'play none none reverse'
+						}
+					});
+				}
+			}
+			
+			setTimeout(initMainAnimations, 3000);
+		</script>
+	</body>
+</html>
