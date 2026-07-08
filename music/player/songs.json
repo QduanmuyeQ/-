@@ -1,0 +1,18 @@
+[
+    {
+        "title": "幻听",
+        "artist": "许嵩",
+        "file": "audio/许嵩 - 幻听.mp3",
+        "cover": "img/ht.jpg",
+        "duration": "0:00",
+        "lyrics": "lyrics/许嵩 - 幻听.lrc"
+    },
+    {
+        "title": "素颜",
+        "artist": "许嵩, 何曼婷",
+        "file": "audio/许嵩, 何曼婷 - 素颜.mp3",
+        "cover": "img/sy.jpg",
+        "duration": "0:00",
+        "lyrics": "lyrics/许嵩, 何曼婷 - 素颜.lrc"
+    }
+]
