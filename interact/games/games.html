@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <style>
+        html, body { margin: 0; padding: 0; }
         .games-page { padding: 30px; color: white; }
         .games-page h1 { text-align: center; margin-bottom: 30px; color: #88DCDC; font-size: 28px; overflow: hidden; display: inline-block; }
         .games-page h1 .title-inner { display: inline-block; }
@@ -18,15 +19,14 @@
         .game-card .game-icon { font-size: 50px; margin-bottom: 15px; }
         .game-card h3 { margin-bottom: 8px; color: #FFB6C1; }
         .game-card p { font-size: 13px; color: #aaa; line-height: 1.5; }
-        .game-card.active { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 700px; max-height: 80vh; z-index: 1000; padding: 30px; overflow-y: auto; }
+        .game-card.active { grid-column: span 2; animation: cardExpand 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; box-shadow: 0 20px 60px rgba(0,0,0,0.4); z-index: 10; background: rgba(20, 20, 20, 0.95); padding: 15px 25px 25px; }
+        @keyframes cardExpand { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.02); opacity: 0.9; } 100% { transform: scale(1); opacity: 1; } }
         .game-card.active .game-preview { display: none; }
         .game-card.active .game-content { display: block; }
-        .game-card .game-content { display: none; text-align: left; }
-        .game-card .game-content h2 { color: #88DCDC; margin-bottom: 20px; text-align: center; }
+        .game-card .game-content { display: none; text-align: left; padding-top: 10px; }
+        .game-card .game-content h2 { color: #88DCDC; margin-bottom: 15px; margin-top: 10px; text-align: center; font-size: 22px; }
         .game-card .close-btn { position: absolute; top: 15px; right: 15px; width: 35px; height: 35px; border: none; border-radius: 50%; background: rgba(255,255,255,0.15); color: white; font-size: 20px; cursor: pointer; transition: background 0.2s; z-index: 10; }
         .game-card .close-btn:hover { background: rgba(255,255,255,0.3); }
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; }
-        .overlay.active { display: block; }
         .danmaku-container { position: relative; width: 100%; height: 350px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
         .danmaku-item { position: absolute; white-space: nowrap; font-size: 16px; color: white; text-shadow: 1px 1px 2px black; animation: danmakuMove linear forwards; }
         @keyframes danmakuMove { 0% { transform: translateX(0); } 100% { transform: translateX(-100vw); } }
@@ -198,8 +198,6 @@
         </div>
     </div>
     
-    <div class="overlay" id="gameOverlay"></div>
-    
     <script>
         const gachaCharacters = [
             { name: '初音未来', icon: '🎤', rarity: 'SSR' },
@@ -237,14 +235,12 @@
             });
             card.querySelector('.close-btn').addEventListener('click', function(e) { e.stopPropagation(); closeGame(); });
         });
-        document.getElementById('gameOverlay').addEventListener('click', closeGame);
         
         function openGame(card) {
-            document.getElementById('gameOverlay').classList.add('active');
+            document.querySelectorAll('.game-card.active').forEach(c => c.classList.remove('active'));
             card.classList.add('active');
         }
         function closeGame() {
-            document.getElementById('gameOverlay').classList.remove('active');
             document.querySelectorAll('.game-card.active').forEach(c => c.classList.remove('active'));
         }
         
@@ -521,18 +517,13 @@
             }
             
             if (cards.length) {
-                gsap.to(cards, {
+                tl.to(cards, {
                     y: 0,
                     opacity: 1,
                     duration: 0.8,
                     ease: 'power3.out',
-                    stagger: 0.12,
-                    scrollTrigger: {
-                        trigger: '.games-grid',
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse'
-                    }
-                });
+                    stagger: 0.12
+                }, 0.5);
             }
         }
         
